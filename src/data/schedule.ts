@@ -1,0 +1,11 @@
+import type { ScheduleData } from '../types';
+
+export const scheduleData: ScheduleData = {
+  headers: ['Horario', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  rows: [
+    { time: 'Mañana', icon: 'fa-sun', color: 'text-green-600 dark:text-green-400', data: ['Escuela<br><span class="text-xs text-gray-400">9:00-10:30</span>', 'Competición<br><span class="text-xs text-gray-400">9:00-10:30</span>', 'Escuela<br><span class="text-xs text-gray-400">9:00-10:30</span>', 'Competición<br><span class="text-xs text-gray-400">9:00-10:30</span>', 'Escuela<br><span class="text-xs text-gray-400">9:00-10:30</span>', 'Ruta Larga<br><span class="text-xs text-gray-400">8:00-10:00</span>'] },
+    { time: 'Mediodía', icon: 'fa-cloud-sun', color: 'text-yellow-600 dark:text-yellow-400', data: ['Adultos<br><span class="text-xs text-gray-400">11:00-12:30</span>', 'Maratón<br><span class="text-xs text-gray-400">11:00-12:30</span>', 'Adultos<br><span class="text-xs text-gray-400">11:00-12:30</span>', 'Maratón<br><span class="text-xs text-gray-400">11:00-12:30</span>', 'Adultos<br><span class="text-xs text-gray-400">11:00-12:30</span>', 'Pista<br><span class="text-xs text-gray-400">9:00-11:00</span>'] },
+    { time: 'Tarde', icon: 'fa-moon', color: 'text-blue-600 dark:text-blue-400', data: ['Élite<br><span class="text-xs text-gray-400">17:00-19:30</span>', 'Élite<br><span class="text-xs text-gray-400">17:00-19:30</span>', 'Élite<br><span class="text-xs text-gray-400">17:00-19:30</span>', 'Élite<br><span class="text-xs text-gray-400">17:00-19:30</span>', 'Élite<br><span class="text-xs text-gray-400">17:00-19:30</span>', '—'] },
+    { time: 'Noche', icon: 'fa-star', color: 'text-purple-600 dark:text-purple-400', data: ['Sprint<br><span class="text-xs text-gray-400">19:30-21:00</span>', 'Fitness<br><span class="text-xs text-gray-400">19:30-20:30</span>', 'Sprint<br><span class="text-xs text-gray-400">19:30-21:00</span>', 'Fitness<br><span class="text-xs text-gray-400">19:30-20:30</span>', 'Sprint<br><span class="text-xs text-gray-400">19:30-21:00</span>', '—'] }
+  ]
+};

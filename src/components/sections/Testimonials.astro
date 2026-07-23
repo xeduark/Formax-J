@@ -1,0 +1,36 @@
+---
+export interface Props { data: any[]; }
+const { data } = Astro.props;
+---
+
+<section id="testimonios" class="py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden speed-lines">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="section-reveal text-center mb-16">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium mb-4">
+        <i class="fas fa-quote-left mr-1"></i> Testimonios
+      </span>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+        Lo que dicen <span class="gradient-text">nuestras familias</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {data.map((t: any) => (
+        <div class="section-reveal testimonial-card bg-white dark:bg-gray-900 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 relative">
+          <div class="absolute top-6 right-6 text-green-200 dark:text-green-900"><i class="fas fa-quote-right text-4xl"></i></div>
+          <div class="flex items-center space-x-1 mb-4">
+            {[...Array(5)].map(() => <i class="fas fa-star text-yellow-400"></i>)}
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-6 italic">{t.quote}</p>
+          <div class="flex items-center space-x-4">
+            <div class={`w-12 h-12 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white font-bold`}>{t.initials}</div>
+            <div>
+              <p class="font-semibold text-gray-900 dark:text-white">{t.name}</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{t.role}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

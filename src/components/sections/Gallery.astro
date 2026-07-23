@@ -1,0 +1,133 @@
+---
+// src/components/sections/Gallery.astro
+export interface Props { 
+  data: Array<{
+    url?: string;
+    title: string;
+    desc: string;
+    category: string;
+    wide?: boolean;
+    type?: 'image' | 'video' | 'event';
+  }>; 
+}
+
+const { data } = Astro.props;
+
+// ✅ Usamos un array de objetos para evitar errores de indexación
+const categories = [
+  { key: 'all', label: 'Todos' },
+  { key: 'training', label: 'Entrenamiento' },
+  { key: 'competition', label: 'Competición' },
+  { key: 'events', label: 'Eventos' }
+] as const;
+---
+
+<section id="galeria" class="py-24 bg-white dark:bg-gray-900 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="section-reveal text-center mb-16">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium mb-4">
+        <i class="fas fa-camera mr-1"></i> Galería
+      </span>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+        Momentos de <span class="gradient-text">velocidad</span>
+      </h2>
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        Cada foto captura la adrenalina, el esfuerzo y la pasión por el patinaje de velocidad.
+      </p>
+    </div>
+
+    <!-- Filtros -->
+    <div class="section-reveal flex flex-wrap justify-center gap-3 mb-12" id="gallery-filters">
+      {categories.map((cat) => (
+        <button
+          class={`gallery-filter px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            cat.key === 'all' 
+              ? 'bg-green-600 text-white' 
+              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-green-100 dark:hover:bg-green-900/30'
+          }`}
+          data-filter={cat.key}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Grid de imágenes -->
+    <div class="section-reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid">
+      {data.map((item) => (
+        <div 
+          class={`gallery-item group relative rounded-2xl overflow-hidden shadow-lg cursor-pointer ${item.wide ? 'sm:col-span-2' : ''}`} 
+          data-category={item.category}
+        >
+          {item.type === 'video' ? (
+            <div class="w-full h-72 bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-700">
+              <i class="fas fa-play-circle text-white text-5xl opacity-80 group-hover:opacity-100 transition-opacity"></i>
+            </div>
+          ) : item.type === 'event' ? (
+            <div class="w-full h-72 bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-700">
+              <i class="fas fa-flag-checkered text-white text-5xl opacity-80 group-hover:opacity-100 transition-opacity"></i>
+            </div>
+          ) : (
+            <img src={item.url} alt={item.title} class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+          )}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div>
+              <p class="text-white font-semibold text-lg">{item.title}</p>
+              <p class="text-gray-300 text-sm">{item.desc}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ✅ CORRECCIÓN: JavaScript puro, sin TypeScript -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.gallery-filter');
+    const items = document.querySelectorAll('.gallery-item');
+    
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Resetear todos los botones
+        buttons.forEach(b => {
+          b.classList.remove('bg-green-600', 'text-white');
+          b.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-600', 'dark:text-gray-300');
+        });
+        // Activar botón clickeado
+        btn.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-600', 'dark:text-gray-300');
+        btn.classList.add('bg-green-600', 'text-white');
+        
+        const filter = btn.getAttribute('data-filter');
+        
+        items.forEach(item => {
+          // ✅ CORRECCIÓN: Cast a HTMLElement para acceder a .style
+          const el = item;
+          const category = el.getAttribute('data-category');
+          const show = filter === 'all' || category === filter;
+          
+          if (show) {
+            el.style.display = '';
+            // Forzar reflow para reiniciar animación
+            void el.offsetWidth;
+            el.style.opacity = '0';
+            el.style.transform = 'scale(0.8)';
+            el.style.transition = 'none';
+            setTimeout(() => {
+              el.style.transition = 'all 0.5s ease';
+              el.style.opacity = '1';
+              el.style.transform = 'scale(1)';
+            }, 50);
+          } else {
+            el.style.opacity = '0';
+            el.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+              el.style.display = 'none';
+            }, 500);
+          }
+        });
+      });
+    });
+  });
+</script>

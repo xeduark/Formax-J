@@ -1,0 +1,65 @@
+---
+const navLinks = [
+  { label: 'Inicio', href: '#inicio' },
+  { label: 'Nosotros', href: '#nosotros' },
+  { label: 'Programas', href: '#programas' },
+  { label: 'Horarios', href: '#horarios' },
+  { label: 'Patrocinadores', href: '#patrocinadores' },
+  { label: 'Galería', href: '#galeria' },
+  { label: 'Contacto', href: '#contacto' }
+];
+---
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <a href="#inicio" class="flex items-center space-x-3 group">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-yellow-500 flex items-center justify-center shadow-lg group-hover:shadow-green-500/30 transition-shadow duration-300">
+          <i class="fas fa-running text-white text-xl"></i>
+        </div>
+        <div>
+          <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-yellow-500 bg-clip-text text-transparent">FORMAX-J</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400 -mt-1">Patinaje de Velocidad</p>
+        </div>
+      </a>
+
+      <div class="hidden lg:flex items-center space-x-8">
+        {navLinks.map((link) => (
+          <a href={link.href} class="nav-link text-sm font-medium hover:text-green-600 dark:hover:text-green-400 transition-colors">{link.label}</a>
+        ))}
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <button id="themeToggle" class="relative w-14 h-7 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors duration-300 focus:outline-none" aria-label="Toggle dark mode">
+          <div class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white dark:bg-yellow-400 shadow-md transform transition-transform duration-300 dark:translate-x-7 flex items-center justify-center">
+            <i class="fas fa-sun text-yellow-500 text-xs dark:hidden"></i>
+            <i class="fas fa-moon text-indigo-600 text-xs hidden dark:block"></i>
+          </div>
+        </button>
+        <a href="#contacto" class="hidden md:inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-full text-sm font-semibold hover:from-green-700 hover:to-green-600 transition-all duration-300 shadow-lg hover:shadow-green-500/30 hover:scale-105">
+          <i class="fas fa-rocket mr-2"></i>Únete
+        </a>
+        <button id="mobileMenuBtn" class="lg:hidden w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          <i class="fas fa-bars text-gray-600 dark:text-gray-300"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="mobile-menu fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-900 shadow-2xl z-50 p-6">
+  <div class="flex justify-between items-center mb-8">
+    <span class="text-lg font-bold bg-gradient-to-r from-green-600 to-yellow-500 bg-clip-text text-transparent">Menú</span>
+    <button id="closeMobileMenu" class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+      <i class="fas fa-times text-gray-600 dark:text-gray-300"></i>
+    </button>
+  </div>
+  <div class="flex flex-col space-y-4">
+    {navLinks.map((link) => (
+      <a href={link.href} class="mobile-link py-3 px-4 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors font-medium"><i class={`fas ${link.href === '#inicio' ? 'fa-home' : link.href === '#nosotros' ? 'fa-users' : link.href === '#programas' ? 'fa-tachometer-alt' : link.href === '#horarios' ? 'fa-clock' : link.href === '#patrocinadores' ? 'fa-handshake' : link.href === '#galeria' ? 'fa-images' : 'fa-envelope'} mr-3 text-green-500`}></i>{link.label}</a>
+    ))}
+    <a href="#contacto" class="mt-4 py-3 px-6 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-full text-center font-semibold"><i class="fas fa-rocket mr-2"></i>Únete al Equipo</a>
+  </div>
+</div>
+<div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>

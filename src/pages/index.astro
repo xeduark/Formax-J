@@ -1,0 +1,34 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import About from '../components/sections/About.astro';
+import Programs from '../components/sections/Programs.astro';
+import Schedule from '../components/sections/Schedule.astro';
+import Sponsors from '../components/sections/Sponsors.astro';
+import Gallery from '../components/sections/Gallery.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import Stats from '../components/sections/Stats.astro';
+import Contact from '../components/sections/Contact.astro';
+
+import { heroData } from '../data/hero';
+import { aboutData } from '../data/about';
+import { programsData } from '../data/programs';
+import { scheduleData } from '../data/schedule';
+import { sponsorsData } from '../data/sponsors';
+import { galleryData } from '../data/gallery';
+import { testimonialsData } from '../data/testimonials';
+import { statsData } from '../data/stats';
+import { contactData } from '../data/contact';
+---
+
+<MainLayout>
+  <Hero data={heroData} />
+  <About data={aboutData} />
+  <Programs data={programsData} />
+  <Schedule data={scheduleData} />
+  <Sponsors data={sponsorsData} />
+  <Gallery data={galleryData} />
+  <Testimonials data={testimonialsData} />
+  <Stats data={statsData} />
+  <Contact data={contactData} />
+</MainLayout>

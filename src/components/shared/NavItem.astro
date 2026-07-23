@@ -1,0 +1,19 @@
+---
+// src/components/shared/NavItem.astro
+import type { NavItem } from '../../types';
+
+export interface Props extends NavItem {}
+
+const { label, href, isPrimary = false } = Astro.props;
+---
+
+<a
+  href={href}
+  class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors
+          ${isPrimary 
+            ? 'bg-blue-600 text-white hover:bg-blue-700' 
+            : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+          }`}
+>
+  {label}
+</a>

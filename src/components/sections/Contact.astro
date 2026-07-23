@@ -1,0 +1,162 @@
+---
+export interface Props { data: any; }
+const { data } = Astro.props;
+---
+
+<section id="contacto" class="py-24 bg-white dark:bg-gray-900 relative">
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-green-100 dark:bg-green-900/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="section-reveal text-center mb-16">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium mb-4">
+        <i class="fas fa-envelope mr-1"></i> Contacto
+      </span>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+        ¿Listo para <span class="gradient-text">rodar con nosotros?</span>
+      </h2>
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        Contáctanos y te ayudaremos a encontrar el programa perfecto para ti o tu familia.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-12">
+      <!-- Info -->
+      <div class="lg:col-span-2 space-y-8 section-reveal">
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Información de Contacto</h3>
+          
+          <div class="space-y-6">
+            <div class="flex items-start space-x-4">
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <i class="fas fa-map-marker-alt text-green-600 dark:text-green-400"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 dark:text-white">Dirección</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm" set:html={data.address}></p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-4">
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <i class="fas fa-phone text-green-600 dark:text-green-400"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 dark:text-white">Teléfono</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">{data.phone}</p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-4">
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <i class="fas fa-envelope text-green-600 dark:text-green-400"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 dark:text-white">Email</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">{data.email}</p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-4">
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <i class="fas fa-clock text-green-600 dark:text-green-400"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 dark:text-white">Horario de Atención</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm" set:html={data.hours}></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <p class="font-semibold text-gray-900 dark:text-white mb-4">Síguenos</p>
+            <div class="flex space-x-3">
+              {data.social.map((icon: string) => (
+                <a href="#" class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors">
+                  <i class={`fab ${icon} text-green-600 dark:text-green-400`}></i>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="lg:col-span-3 section-reveal">
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Envíanos un Mensaje</h3>
+          
+          <form id="contactForm" class="space-y-6">
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nombre *</label>
+                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tu nombre">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Apellidos *</label>
+                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tus apellidos">
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
+                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="tu@email.com">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Teléfono</label>
+                <input type="tel" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="+34 600 000 000">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Programa de Interés</label>
+              <select class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none">
+                <option value="">Selecciona un programa</option>
+                {data.programs.map((p: string) => <option value={p}>{p}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mensaje</label>
+              <textarea rows="4" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none resize-none" placeholder="Cuéntanos sobre tu experiencia o pregunta..."></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-semibold text-lg hover:from-green-700 hover:to-green-600 transition-all duration-300 shadow-lg hover:shadow-green-500/30 hover:scale-[1.02] flex items-center justify-center">
+              <i class="fas fa-paper-plane mr-2"></i> Enviar Mensaje
+            </button>
+          </form>
+
+          <div id="formSuccess" class="hidden mt-6 p-4 bg-green-100 dark:bg-green-900/30 rounded-xl text-green-700 dark:text-green-300 text-center">
+            <i class="fas fa-check-circle text-2xl mb-2"></i>
+            <p class="font-semibold">¡Mensaje enviado correctamente!</p>
+            <p class="text-sm">Te contactaremos lo antes posible.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contactForm') as HTMLFormElement;
+    const success = document.getElementById('formSuccess');
+    if (!form) return;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        form.reset();
+        success?.classList.remove('hidden');
+        setTimeout(() => success?.classList.add('hidden'), 5000);
+      }, 1500);
+    });
+  });
+</script>

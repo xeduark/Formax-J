@@ -1,0 +1,14 @@
+---
+// src/components/ui/Card.astro
+export interface Props {
+  class?: string;
+  hover?: boolean;
+  children: any;
+}
+
+const { class: className = '', hover = true, children } = Astro.props;
+---
+
+<div class={`bg-white rounded-2xl shadow-lg overflow-hidden ${hover ? 'hover:shadow-2xl transition-shadow duration-300' : ''} ${className}`}>
+  <slot />
+</div>

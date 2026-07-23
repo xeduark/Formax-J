@@ -1,0 +1,25 @@
+---
+// src/components/shared/ScrollButton.astro
+export interface Props {
+  target: string;
+  label?: string;
+}
+
+const { target, label = 'Scroll' } = Astro.props;
+---
+
+<a
+  href={target}
+  class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/80 hover:text-white transition-colors group"
+  aria-label={label}
+>
+  <span class="text-xs font-medium">{label}</span>
+  <svg 
+    class="w-6 h-6 animate-bounce" 
+    fill="none" 
+    stroke="currentColor" 
+    viewBox="0 0 24 24"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+  </svg>
+</a>

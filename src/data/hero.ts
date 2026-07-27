@@ -7,11 +7,11 @@ export const heroData = {
   ctaPrimary: { text: 'Explorar Programas', href: '#programas' },
   ctaSecondary: { text: 'Ver Galería', href: '#galeria' },
   stats: [
-    { value: '500', label: 'Patinadores' },
+    { value: '50', label: 'Patinadores' },
     { value: '150', label: 'Medallas' },
     { value: '14', label: 'Años', suffix: '+' }
   ],
-  image: 'https://res.cloudinary.com/tu-cloud/image/upload/formax-j/hero-patinador.jpg',
+  image: 'https://res.cloudinary.com/cx3z2ry1/image/upload/v1785181593/patinesprorojos-removebg-preview_ba6qah.png',
   badges: [
     { icon: 'fa-medal', text: '+150 Medallas', subtext: 'En competiciones nacionales' },
     { icon: 'fa-bolt', text: 'Máxima Velocidad', subtext: '60+ km/h en pista' }

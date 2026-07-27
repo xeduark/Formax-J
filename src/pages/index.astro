@@ -14,7 +14,7 @@ import { heroData } from '../data/hero';
 import { aboutData } from '../data/about';
 import { programsData } from '../data/programs';
 import { scheduleData } from '../data/schedule';
-import { sponsorsData } from '../data/sponsors';
+import { mainSponsor, sponsorProducts, secondarySponsors } from '../data/sponsors';
 import { galleryData } from '../data/gallery';
 import { testimonialsData } from '../data/testimonials';
 import { statsData } from '../data/stats';
@@ -26,7 +26,12 @@ import { contactData } from '../data/contact';
   <About data={aboutData} />
   <Programs data={programsData} />
   <Schedule data={scheduleData} />
-  <Sponsors data={sponsorsData} />
+  <Sponsors 
+  mainSponsor={mainSponsor} 
+  products={sponsorProducts} 
+  secondary={secondarySponsors} 
+  badge="Nuestros Patrocinadores"
+/>
   <Gallery data={galleryData} />
   <Testimonials data={testimonialsData} />
   <Stats data={statsData} />

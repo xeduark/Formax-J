@@ -1,4 +1,5 @@
 ---
+// src/components/sections/Contact.astro
 export interface Props { data: any; }
 const { data } = Astro.props;
 ---
@@ -89,36 +90,43 @@ const { data } = Astro.props;
             <div class="grid sm:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nombre *</label>
-                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tu nombre">
+                <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tu nombre">
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Apellidos *</label>
-                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tus apellidos">
+                <input type="text" name="lastname" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tus apellidos">
               </div>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
-                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="tu@email.com">
+                <input type="email" name="email" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="tu@email.com">
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Teléfono</label>
-                <input type="tel" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="+34 600 000 000">
+                <input type="tel" name="phone" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="+57 300 000 0000">
               </div>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Programa de Interés</label>
-              <select class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none">
+              <select name="program" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none">
                 <option value="">Selecciona un programa</option>
                 {data.programs.map((p: string) => <option value={p}>{p}</option>)}
               </select>
             </div>
 
+            {/* ✅ ID agregado al textarea para pre-llenado desde Programs.astro */}
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mensaje</label>
-              <textarea rows="4" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none resize-none" placeholder="Cuéntanos sobre tu experiencia o pregunta..."></textarea>
+              <textarea 
+                id="contactMessage"
+                name="message"
+                rows="4" 
+                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none resize-none"
+                placeholder="Cuéntanos sobre tu experiencia o pregunta..."
+              ></textarea>
             </div>
 
             <button type="submit" class="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-semibold text-lg hover:from-green-700 hover:to-green-600 transition-all duration-300 shadow-lg hover:shadow-green-500/30 hover:scale-[1.02] flex items-center justify-center">
@@ -137,15 +145,16 @@ const { data } = Astro.props;
   </div>
 </section>
 
-<script>
+{/* ✅ CORRECCIÓN: JavaScript puro sin TypeScript */}
+<script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('contactForm') as HTMLFormElement;
+    const form = document.getElementById('contactForm');
     const success = document.getElementById('formSuccess');
     if (!form) return;
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const btn = form.querySelector('button[type="submit"]');
       const originalText = btn.innerHTML;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
       btn.disabled = true;
@@ -154,8 +163,10 @@ const { data } = Astro.props;
         btn.innerHTML = originalText;
         btn.disabled = false;
         form.reset();
-        success?.classList.remove('hidden');
-        setTimeout(() => success?.classList.add('hidden'), 5000);
+        if (success) {
+          success.classList.remove('hidden');
+          setTimeout(() => success.classList.add('hidden'), 5000);
+        }
       }, 1500);
     });
   });

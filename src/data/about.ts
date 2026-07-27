@@ -5,9 +5,9 @@ export const aboutData: AboutData = {
   title: 'Más que un club, <span class="gradient-text">una familia veloz</span>',
   description: 'En FORMAX-J formamos patinadores de velocidad de élite. Nuestra filosofía combina técnica, resistencia y mentalidad ganadora para llevar a cada patinador al siguiente nivel.',
   images: [
-    'https://image.qwenlm.ai/public_source/7601c721-671c-41e0-bccd-c0351aa1ba68/61195d2a2-8f0e-4b8d-a833-40d846028b49.png',
-    'https://image.qwenlm.ai/public_source/7601c721-671c-41e0-bccd-c0351aa1ba68/1b916ae81-4df4-48db-921b-bec578378fc5.png',
-    'https://image.qwenlm.ai/public_source/7601c721-671c-41e0-bccd-c0351aa1ba68/e12e04750-c48f-4a99-a152-408a67b67f15.png',
+    'https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184161/ni%C3%B1apatines_seylrj.jpg',
+    'https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184161/ni%C3%B1apatinesnegros_pp3cia.jpg',
+    'https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184160/patinespronegros_ubo62r.jpg',
     'https://res.cloudinary.com/cx3z2ry1/image/upload/v1783628803/hero_n9nnbb.jpg'
   ],
   features: [

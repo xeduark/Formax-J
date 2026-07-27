@@ -49,7 +49,25 @@ export interface ScheduleData {
   rows: ScheduleRow[];
 }
 
-export interface SponsorProduct { name: string; desc: string; price: string; icon: string; color: string; }
+// src/types/index.d.ts
+
+export interface SponsorProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  icon: string;
+  color: string;
+  image?: string;
+}
+
+export interface Sponsor {
+  id: string;
+  name: string;
+  description: string;
+  logo: string;
+  url: string;
+}
 
 export interface SponsorsData {
   main: { name: string; desc: string; url: string; icon: string; gradient: string; };

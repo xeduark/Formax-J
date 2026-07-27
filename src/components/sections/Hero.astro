@@ -1,74 +1,185 @@
 ---
-import type { HeroData } from '../../types';
-import ImageCloudinary from '../ui/ImageCloudinary.astro';
+import type { HeroData } from "../../types";
+import ImageCloudinary from "../ui/ImageCloudinary.astro";
 
-export interface Props { data: HeroData; }
+export interface Props {
+  data: HeroData;
+}
 const { data } = Astro.props;
 ---
 
-<section id="inicio" class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-950 dark:to-black pt-20">
+<section
+  id="inicio"
+  class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-950 dark:to-black pt-20"
+>
   <div class="absolute inset-0 overflow-hidden">
     <div class="absolute inset-0 track-bg opacity-30"></div>
-    <div class="absolute top-20 left-10 w-72 h-72 bg-green-400/10 rounded-full blur-3xl animate-float"></div>
-    <div class="absolute bottom-20 right-10 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-green-400/5 to-yellow-400/5 rounded-full blur-3xl"></div>
-    <div class="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-green-500/30 to-transparent animate-[speedLine_3s_linear_infinite]"></div>
-    <div class="absolute top-1/3 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent animate-[speedLine_4s_linear_infinite]" style="animation-delay: 1s;"></div>
-    <div class="absolute top-2/3 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-green-500/20 to-transparent animate-[speedLine_3.5s_linear_infinite]" style="animation-delay: 2s;"></div>
+    <div
+      class="absolute top-20 left-10 w-72 h-72 bg-green-400/10 rounded-full blur-3xl animate-float"
+    >
+    </div>
+    <div
+      class="absolute bottom-20 right-10 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl animate-float"
+      style="animation-delay: -3s;"
+    >
+    </div>
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-green-400/5 to-yellow-400/5 rounded-full blur-3xl"
+    >
+    </div>
+    <div
+      class="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-green-500/30 to-transparent animate-[speedLine_3s_linear_infinite]"
+    >
+    </div>
+    <div
+      class="absolute top-1/3 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent animate-[speedLine_4s_linear_infinite]"
+      style="animation-delay: 1s;"
+    >
+    </div>
+    <div
+      class="absolute top-2/3 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-green-500/20 to-transparent animate-[speedLine_3.5s_linear_infinite]"
+      style="animation-delay: 2s;"
+    >
+    </div>
   </div>
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div class="text-center lg:text-left space-y-8">
-        <div class="inline-flex items-center px-4 py-2 rounded-full bg-green-900/30 text-green-400 text-sm font-medium border border-green-500/20 animate-slide-left">
-          <i class="fas fa-trophy mr-2"></i> {data.badge}
+        <div
+          class="inline-flex items-center px-4 py-2 rounded-full bg-green-900/30 text-green-400 text-sm font-medium border border-green-500/20 animate-slide-left"
+        >
+          <i class="fas fa-trophy mr-2"></i>
+          {data.badge}
         </div>
-        
-        <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight animate-slide-up">
+
+        <h1
+          class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight animate-slide-up"
+        >
           <span class="block text-white">{data.title}</span>
-          <span class="block bg-gradient-to-r from-green-500 via-yellow-400 to-green-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_3s_linear_infinite]">
+          <span
+            class="block bg-gradient-to-r from-green-500 via-yellow-400 to-green-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_3s_linear_infinite]"
+          >
             {data.gradientText}
           </span>
           <span class="block text-white font-extrabold">{data.brand}</span>
         </h1>
-        
-        <p class="text-lg sm:text-xl text-gray-400 max-w-lg mx-auto lg:mx-0 animate-slide-up" style="animation-delay: 0.2s;">{data.subtitle}</p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up" style="animation-delay: 0.4s;">
-          <a href={data.ctaPrimary.href} class="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-full font-semibold text-lg hover:from-green-700 hover:to-green-600 transition-all duration-300 shadow-xl hover:shadow-green-500/30 hover:scale-105">
-            {data.ctaPrimary.text} <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+
+        <p
+          class="text-lg sm:text-xl text-gray-400 max-w-lg mx-auto lg:mx-0 animate-slide-up"
+          style="animation-delay: 0.2s;"
+        >
+          {data.subtitle}
+        </p>
+
+        <div
+          class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up"
+          style="animation-delay: 0.4s;"
+        >
+          <a
+            href={data.ctaPrimary.href}
+            class="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-full font-semibold text-lg hover:from-green-700 hover:to-green-600 transition-all duration-300 shadow-xl hover:shadow-green-500/30 hover:scale-105"
+          >
+            {data.ctaPrimary.text}
+            <i
+              class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"
+            ></i>
           </a>
-          <a href={data.ctaSecondary.href} class="group inline-flex items-center px-8 py-4 bg-white/10 text-white rounded-full font-semibold text-lg hover:bg-white/20 transition-all duration-300 shadow-lg backdrop-blur-sm border border-white/10">
-            <i class="fas fa-play-circle mr-2 text-green-400"></i> {data.ctaSecondary.text}
+          <a
+            href={data.ctaSecondary.href}
+            class="group inline-flex items-center px-8 py-4 bg-white/10 text-white rounded-full font-semibold text-lg hover:bg-white/20 transition-all duration-300 shadow-lg backdrop-blur-sm border border-white/10"
+          >
+            <i class="fas fa-play-circle mr-2 text-green-400"></i>
+            {data.ctaSecondary.text}
           </a>
         </div>
 
-        <div class="grid grid-cols-3 gap-6 pt-8 animate-slide-up" style="animation-delay: 0.6s;">
-          {data.stats.map((stat) => (
-            <div class="text-center lg:text-left">
-              <div class="text-3xl sm:text-4xl font-bold text-green-400 counter" data-target={stat.value}>0</div>
-              <div class="text-sm text-gray-500 mt-1">{stat.label}{stat.suffix || ''}</div>
-            </div>
-          ))}
+        <div
+          class="grid grid-cols-3 gap-6 pt-8 animate-slide-up"
+          style="animation-delay: 0.6s;"
+        >
+          {
+            data.stats.map((stat) => (
+              <div class="text-center lg:text-left">
+                <div
+                  class="text-3xl sm:text-4xl font-bold text-green-400 counter"
+                  data-target={stat.value}
+                >
+                  0
+                </div>
+                <div class="text-sm text-gray-500 mt-1">
+                  {stat.label}
+                  {stat.suffix || ""}
+                </div>
+              </div>
+            ))
+          }
         </div>
       </div>
 
-      <div class="relative animate-scale-in hidden lg:block" style="animation-delay: 0.3s;">
+      <div
+        class="relative animate-scale-in hidden lg:block"
+        style="animation-delay: 0.3s;"
+      >
         <div class="relative">
-          <div class="absolute -inset-4 bg-gradient-to-r from-green-400/20 to-yellow-400/20 rounded-3xl blur-2xl"></div>
-          <ImageCloudinary src={data.image} alt="Patinador de velocidad" class="relative rounded-3xl shadow-2xl w-full max-w-lg mx-auto glow-hover" />
-          
-          <div class="absolute -bottom-6 -left-6 glass-effect rounded-2xl shadow-xl p-4 animate-float border border-white/10" style="animation-delay: -1s;">
-            <div class="flex items-center space-x-3">
-              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center"><i class={`fas ${data.badges[0].icon} text-white`}></i></div>
-              <div><p class="font-bold text-white text-sm">{data.badges[0].text}</p><p class="text-xs text-gray-400">{data.badges[0].subtext}</p></div>
+          <div
+            class="absolute -inset-4 bg-gradient-to-r from-green-400/20 to-yellow-400/20 rounded-3xl blur-2xl"
+          >
+          </div>
+          <div
+            class="relative rounded-3xl shadow-2xl w-full max-w-md mx-auto glow-hover overflow-hidden"
+          >
+            {/* Imagen principal */}
+            <ImageCloudinary
+              src={data.image}
+              alt="Patinador de velocidad"
+              class="w-full h-auto object-contain transition-transform duration-500 hover:scale-[1.02]"
+            />
+
+            {/* ✅ Overlay con transición suave en la parte inferior */}
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-gray-900/30 via-transparent to-transparent pointer-events-none"
+            >
             </div>
           </div>
 
-          <div class="absolute -top-4 -right-4 glass-effect rounded-2xl shadow-xl p-4 animate-float border border-white/10" style="animation-delay: -2s;">
+          <div
+            class="absolute -bottom-6 -left-6 glass-effect rounded-2xl shadow-xl p-4 animate-float border border-white/10"
+            style="animation-delay: -1s;"
+          >
             <div class="flex items-center space-x-3">
-              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center"><i class={`fas ${data.badges[1].icon} text-white`}></i></div>
-              <div><p class="font-bold text-white text-sm">{data.badges[1].text}</p><p class="text-xs text-gray-400">{data.badges[1].subtext}</p></div>
+              <div
+                class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center"
+              >
+                <i class={`fas ${data.badges[0].icon} text-white`}></i>
+              </div>
+              <div>
+                <p class="font-bold text-white text-sm">
+                  {data.badges[0].text}
+                </p><p class="text-xs text-gray-400">
+                  {data.badges[0].subtext}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="absolute -top-4 -right-4 glass-effect rounded-2xl shadow-xl p-4 animate-float border border-white/10"
+            style="animation-delay: -2s;"
+          >
+            <div class="flex items-center space-x-3">
+              <div
+                class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center"
+              >
+                <i class={`fas ${data.badges[1].icon} text-white`}></i>
+              </div>
+              <div>
+                <p class="font-bold text-white text-sm">
+                  {data.badges[1].text}
+                </p><p class="text-xs text-gray-400">
+                  {data.badges[1].subtext}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -77,6 +188,9 @@ const { data } = Astro.props;
   </div>
 
   <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-    <a href="#nosotros" class="flex flex-col items-center text-green-400"><span class="text-xs font-medium mb-2">Scroll</span><i class="fas fa-chevron-down"></i></a>
+    <a href="#nosotros" class="flex flex-col items-center text-green-400"
+      ><span class="text-xs font-medium mb-2">Scroll</span><i
+        class="fas fa-chevron-down"></i></a
+    >
   </div>
 </section>

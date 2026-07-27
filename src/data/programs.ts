@@ -1,35 +1,38 @@
-export const programsData = [
+// src/data/programs.ts
+import type { Program } from '../types';
+
+export const programsData: Program[] = [
   {
     id: 'iniciacion',
-    title: 'Escuela de Iniciación',
-    age: '4 - 8 años',
-    freq: '2 veces/semana',
-    desc: 'Primer contacto con el patinaje de velocidad. Aprende a patinar con patines en línea, equilibrio, frenado y técnica básica de patinaje.',
-    price: '€45',
+    title: 'Escuela Básica',
+    age: 'Principiantes',
+    freq: '2 veces/semana (Mar-Jue)',
+    desc: 'Primer contacto con el patinaje de velocidad. Aprende equilibrio, frenado y técnica básica en pista.',
+    price: '$60.000',
     icon: 'fa-child',
     gradient: 'from-green-400 to-green-600',
-    popular: false
+    popular: true
   },
   {
-    id: 'competicion',
-    title: 'Velocidad Competición',
-    age: '8 - 18 años',
-    freq: '4 veces/semana',
-    desc: 'Programa competitivo con entrenamiento en pista y ruta. Técnica de patinaje, virajes, salida sprint y preparación para campeonatos.',
-    price: '€95',
+    id: 'avanzada',
+    title: 'Escuela Avanzada',
+    age: 'Intermedios y avanzados',
+    freq: '3 veces/semana (Mar-Jue-Sáb)',
+    desc: 'Entrenamiento en pista y calle. Técnica de viraje, salida sprint y preparación física integral.',
+    price: '$70.000',
     icon: 'fa-running',
-    gradient: 'from-yellow-400 to-green-500',
-    popular: true
+    gradient: 'from-blue-400 to-blue-600',
+    popular: false
   },
   {
     id: 'maraton',
     title: 'Maratón & Ruta',
     age: '12+ años',
-    freq: '3 veces/semana',
-    desc: 'Especialización en pruebas de larga distancia y maratones de patinaje. Resistencia, pacing, nutrición deportiva y estrategia de carrera.',
-    price: '€85',
+    freq: 'Sábados en calle',
+    desc: 'Especialización en pruebas de larga distancia. Resistencia, pacing, nutrición y estrategia de carrera.',
+    price: '$85.000',
     icon: 'fa-route',
-    gradient: 'from-blue-400 to-purple-600',
+    gradient: 'from-yellow-400 to-green-500',
     popular: false
   },
   {
@@ -37,8 +40,8 @@ export const programsData = [
     title: 'Sprint & Pista',
     age: '10+ años',
     freq: '4 veces/semana',
-    desc: 'Entrenamiento de velocidad máxima en pista ovalada. Salidas explosivas, técnica de curva a alta velocidad y sprints de 300m a 1500m.',
-    price: '€100',
+    desc: 'Velocidad máxima en pista ovalada. Salidas explosivas, técnica de curva y sprints de 300m a 1500m.',
+    price: '$100.000',
     icon: 'fa-bolt',
     gradient: 'from-red-400 to-orange-500',
     popular: false
@@ -48,8 +51,8 @@ export const programsData = [
     title: 'Élite',
     age: '14+ años',
     freq: '6 veces/semana',
-    desc: 'Programa de alto rendimiento para patinadores de élite. Entrenamiento individualizado, preparación física avanzada y campeonatos internacionales.',
-    price: '€180',
+    desc: 'Alto rendimiento. Entrenamiento individualizado, preparación física avanzada y campeonatos internacionales.',
+    price: '$180.000',
     icon: 'fa-crown',
     gradient: 'from-indigo-400 to-blue-600',
     popular: false
@@ -59,8 +62,8 @@ export const programsData = [
     title: 'Adultos & Fitness',
     age: '18+ años',
     freq: '2-3 veces/semana',
-    desc: 'Patinaje de velocidad para adultos que buscan fitness, diversión o competición. Desde principiantes hasta nivel avanzado. ¡La edad es solo un número!',
-    price: '€65',
+    desc: 'Patinaje para adultos que buscan fitness, diversión o competición. Desde principiantes hasta nivel avanzado.',
+    price: '$65.000',
     icon: 'fa-user-friends',
     gradient: 'from-orange-400 to-red-500',
     popular: false

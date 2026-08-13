@@ -7,7 +7,7 @@ export const mainSponsor: Sponsor = {
   description:
     "Líder en equipamiento deportivo para patinaje de velocidad. Calzado, protecciones y accesorios de alta calidad para competidores de élite.",
   logo: "https://res.cloudinary.com/cx3z2ry1/image/upload/v1785178467/logocityrun-removebg-preview_l6iwuh.png", // ✅ Tu URL de Cloudinary
-  url: "https://cityrun.com",
+  url: "https://cityrun.com.co/",
 };
 
 export const sponsorProducts: SponsorProduct[] = [

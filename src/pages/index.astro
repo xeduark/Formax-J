@@ -19,11 +19,14 @@ import { galleryData } from '../data/gallery';
 import { testimonialsData } from '../data/testimonials';
 import { statsData } from '../data/stats';
 import { contactData } from '../data/contact';
+import { methodologyData } from '../data/methodology';
+import Methodology from '../components/sections/Methodology.astro';
 ---
 
 <MainLayout>
   <Hero data={heroData} />
   <About data={aboutData} />
+  <Methodology data={methodologyData} />
   <Programs data={programsData} />
   <Schedule data={scheduleData} />
   <Sponsors 

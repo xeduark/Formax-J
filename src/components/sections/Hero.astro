@@ -1,4 +1,5 @@
 ---
+// src/components/sections/Hero.astro
 import type { HeroData } from "../../types";
 import ImageCloudinary from "../ui/ImageCloudinary.astro";
 
@@ -53,17 +54,27 @@ const { data } = Astro.props;
           {data.badge}
         </div>
 
-        <h1
-          class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight animate-slide-up"
-        >
-          <span class="block text-white">{data.title}</span>
-          <span
-            class="block bg-gradient-to-r from-green-500 via-yellow-400 to-green-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_3s_linear_infinite]"
-          >
-            {data.gradientText}
-          </span>
-          <span class="block text-white font-extrabold">{data.brand}</span>
-        </h1>
+       <h1 class="font-display leading-tight animate-slide-up">
+  {/* Línea 1: FORMACIÓN - Blanco, más presente */}
+  <span class="block text-white/80 text-2xl sm:text-3xl lg:text-4xl font-bold tracking-[0.15em] uppercase mb-2">
+    {data.title}
+  </span>
+
+  {/* Línea 2: MÁXIMA - Gradiente protagonista (sin cambios, sigue siendo el más grande) */}
+  <span class="block bg-gradient-to-r from-green-500 via-yellow-400 to-green-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_3s_linear_infinite] text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-none">
+    {data.gradientText}
+  </span>
+
+  {/* Línea 3: A TRAVÉS DEL DEPORTE - Blanco, más legible */}
+  <span class="block text-white/80 text-base sm:text-lg lg:text-2xl font-semibold uppercase tracking-[0.2em] mt-3 mb-2">
+    {data.textAdd}
+  </span>
+
+  {/* Línea 4: FORMAX-J - Gradiente sólido */}
+  <span class="block bg-gradient-to-r from-green-500 via-yellow-400 to-green-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_3s_linear_infinite] text-3xl sm:text-4xl lg:text-5xl font-bold">
+    {data.brand}
+  </span>
+</h1>
 
         <p
           class="text-lg sm:text-xl text-gray-400 max-w-lg mx-auto lg:mx-0 animate-slide-up"
@@ -129,14 +140,11 @@ const { data } = Astro.props;
           <div
             class="relative rounded-3xl shadow-2xl w-full max-w-md mx-auto glow-hover overflow-hidden"
           >
-            {/* Imagen principal */}
             <ImageCloudinary
               src={data.image}
               alt="Patinador de velocidad"
               class="w-full h-auto object-contain transition-transform duration-500 hover:scale-[1.02]"
             />
-
-            {/* ✅ Overlay con transición suave en la parte inferior */}
             <div
               class="absolute inset-0 bg-gradient-to-t from-gray-900/30 via-transparent to-transparent pointer-events-none"
             >
@@ -156,7 +164,8 @@ const { data } = Astro.props;
               <div>
                 <p class="font-bold text-white text-sm">
                   {data.badges[0].text}
-                </p><p class="text-xs text-gray-400">
+                </p>
+                <p class="text-xs text-gray-400">
                   {data.badges[0].subtext}
                 </p>
               </div>
@@ -176,7 +185,8 @@ const { data } = Astro.props;
               <div>
                 <p class="font-bold text-white text-sm">
                   {data.badges[1].text}
-                </p><p class="text-xs text-gray-400">
+                </p>
+                <p class="text-xs text-gray-400">
                   {data.badges[1].subtext}
                 </p>
               </div>

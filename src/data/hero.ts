@@ -1,7 +1,10 @@
+// SI SE AGREGA ALGUNA VARIABLE NUEVA, AGREGARLA TAMBIÉN EN EL ARCHIVO src/types/index.d.ts
+
 export const heroData = {
   badge: 'Club Campeón de Velocidad desde 2010',
-  title: 'Velocidad sobre Ruedas',
-  gradientText: 'sobre Ruedas',
+  title: 'FORMACIÓN',
+  gradientText: 'MÁXIMA',
+  textAdd:'A TRAVÉS DEL DEPORTE',
   brand: 'FORMAX-J',
   subtitle: 'Patinaje de velocidad en línea. Formación de campeones con disciplina, técnica y pasión por la velocidad. Cada rueda cuenta, cada segundo importa.',
   ctaPrimary: { text: 'Explorar Programas', href: '#programas' },

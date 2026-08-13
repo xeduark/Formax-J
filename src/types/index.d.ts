@@ -6,6 +6,7 @@ export interface HeroData {
   badge: string;
   title: string;
   gradientText: string;
+  textAdd: string;
   brand: string;
   subtitle: string;
   ctaPrimary: { text: string; href: string };

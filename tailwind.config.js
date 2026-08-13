@@ -27,7 +27,7 @@ export default {
         }
       },
       fontFamily: {
-        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        display:['"Montserrat"', 'sans-serif'],
         body: ['"Inter"', 'system-ui', 'sans-serif'],
       },
       animation: {

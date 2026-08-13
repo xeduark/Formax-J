@@ -4,11 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* FUENTES PERSONALIZADAS */
 @layer base {
   * { @apply m-0 p-0 box-border; }
   html { @apply scroll-smooth; }
-  body { @apply font-body overflow-x-hidden bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors; transition-duration: 500ms; }
-  .font-display { font-family: 'Playfair Display', Georgia, serif; }
+  
+  body { 
+    @apply font-body overflow-x-hidden bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors;
+    transition-duration: 500ms;
+  }
+  
+  /* ✅ Bebas Neue para títulos PARA CAMBIAR EDITAR EL TAILWIND.CONFIG.JS */
+  .font-display {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; /* Peso de fuente para títulos */
+    letter-spacing: 0.02em; /* Espaciado sutil para mejor legibilidad */
+  }
 }
 
 @layer components {

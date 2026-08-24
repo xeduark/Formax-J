@@ -1,0 +1,37 @@
+---
+import type { SlotCardProps } from '../../../types/schedule';
+export type Props = SlotCardProps;
+// ✅ Usamos scheduleSlot en lugar de slot
+const { scheduleSlot, isLast = false }: Props = Astro.props;
+
+const isPista = scheduleSlot.sessionType === 'pista';
+const loc = scheduleSlot.location.toLowerCase();
+const locStyles = loc.includes('girardota')
+  ? { bg: 'bg-blue-50 dark:bg-blue-900/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-200 dark:border-blue-800', icon: 'text-blue-500', ring: 'ring-blue-200/50' }
+  : loc.includes('hatillo')
+  ? { bg: 'bg-yellow-50 dark:bg-yellow-900/40', text: 'text-yellow-700 dark:text-yellow-300', border: 'border-yellow-200 dark:border-yellow-800', icon: 'text-yellow-500', ring: 'ring-yellow-200/50' }
+  : { bg: 'bg-green-50 dark:bg-green-900/40', text: 'text-green-700 dark:text-green-300', border: 'border-green-200 dark:border-green-800', icon: 'text-green-500', ring: 'ring-green-200/50' };
+---
+
+<div class="relative group">
+  {!isLast && <div class="absolute left-[13px] top-10 bottom-[-16px] w-0.5 bg-gray-200 dark:bg-gray-700/50"></div>}
+  <div class={`relative flex gap-3 p-3.5 rounded-2xl bg-white dark:bg-gray-900 border ${locStyles.border} shadow-sm hover:shadow-md transition-all ${isPista ? `ring-1 ${locStyles.ring}` : ''}`}>
+    <div class="flex flex-col items-center justify-center w-11 h-11 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 flex-shrink-0">
+      <i class={`fas fa-clock ${locStyles.icon} text-xs`}></i>
+      <span class="text-[10px] font-bold text-gray-600 dark:text-gray-300 mt-0.5">{scheduleSlot.time.split(' ')[0]}</span>
+    </div>
+    <div class="flex-1 flex flex-col justify-center min-w-0">
+      <span class="text-sm font-bold text-gray-800 dark:text-white leading-none mb-1.5">{scheduleSlot.time}</span>
+      <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold border ${locStyles.bg} ${locStyles.text} ${locStyles.border} w-fit`}>
+        <i class="fas fa-map-pin text-[9px]"></i> {scheduleSlot.location}
+      </span>
+      {(scheduleSlot.statusText || scheduleSlot.notes) && (
+        <p class={`mt-2.5 text-[10px] leading-snug ${isPista ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-gray-500 dark:text-gray-400'}`}>
+          {scheduleSlot.statusText && <span class="font-medium">{scheduleSlot.statusText}</span>}
+          {scheduleSlot.statusText && scheduleSlot.notes && <br />}
+          {scheduleSlot.notes}
+        </p>
+      )}
+    </div>
+  </div>
+</div>

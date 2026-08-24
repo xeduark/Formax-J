@@ -1,0 +1,16 @@
+---
+import type { AlertNoteProps } from '../../../types/schedule';
+export interface Props extends AlertNoteProps {}
+const { message, variant = 'warning' }: Props = Astro.props;
+
+const styles = variant === 'warning' 
+  ? { bg: 'bg-yellow-50 dark:bg-yellow-900/20', border: 'border-yellow-500', text: 'text-yellow-800 dark:text-yellow-200', icon: 'fa-exclamation-triangle text-yellow-600 dark:text-yellow-400' }
+  : { bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-500', text: 'text-blue-800 dark:text-blue-200', icon: 'fa-info-circle text-blue-600 dark:text-blue-400' };
+---
+
+<div class="section-reveal mb-8 max-w-3xl mx-auto">
+  <div class={`${styles.bg} border-l-4 ${styles.border} rounded-2xl p-4 flex items-start gap-3 shadow-xs`}>
+    <i class={`fas ${styles.icon} mt-1`}></i>
+    <p class={`text-sm ${styles.text} leading-relaxed`}>{message}</p>
+  </div>
+</div>

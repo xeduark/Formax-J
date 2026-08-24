@@ -1,8 +1,25 @@
 ---
-// src/components/sections/Programs.astro
-export interface Props { 
-  data: Array<any>; 
+import RegistrationCardAstroComponent from "../ui/RegistrationCard.astro";
+import { registrationData } from "@/data/registration";
+import ProgramCard from "../ui/ProgramCard.astro";
+
+export interface Props {
+  data: Array<{
+    id: string;
+    title: string;
+    age: string;
+    freq: string;
+    desc: string;
+    price: string;
+    icon: string;
+    gradient: string;
+    popular?: boolean;
+    level: string;
+    methodologyFocus: string;
+    details: string[];
+  }>;
 }
+
 const { data } = Astro.props;
 ---
 
@@ -19,6 +36,9 @@ const { data } = Astro.props;
         Desde primeros pasos sobre patines de velocidad hasta competición de élite internacional.
       </p>
     </div>
+
+    <div class="section-reveal mb-12">
+      <RegistrationCardAstroComponent data={registrationData} />
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {data.map((program) => (

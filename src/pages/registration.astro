@@ -1,0 +1,25 @@
+---
+// src/pages/registration.astro
+import MainLayout from '../layouts/MainLayout.astro';
+
+// ✅ Sección completa → components/sections/
+import RegistrationSection from '@components/ui/registration/RegistrationCard.astro';
+
+// ✅ Componente atómico → components/ui/
+import RegistrationModal from '@components/ui/registration/RegistrationModal.astro';
+
+import { registrationData } from '../data/registration';
+
+// Meta tags para SEO
+const title = 'Inscripción | Club Deportivo FORMAX-J';
+const description = 'Únete al Club FORMAX-J. Proceso de afiliación, requisitos y preguntas frecuentes para patinaje de velocidad en línea.';
+---
+
+<MainLayout title={title} description={description}>
+  {/* Sección principal de inscripción */}
+  <RegistrationSection data={registrationData}
+  />
+  
+  {/* Modal de pre-inscripción (oculto por defecto) */}
+  <RegistrationModal data={registrationData} />
+</MainLayout>

@@ -1,0 +1,20 @@
+---
+import type { ScheduleLegendProps } from '../../../types/schedule';
+export interface Props extends ScheduleLegendProps {}
+const { items = [] }: Props = Astro.props;
+---
+
+{items.length > 0 && (
+  <div class="section-reveal mt-10 flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+    {items.map((item) => (
+      <span class="flex items-center gap-2">
+        {item.color.startsWith('bg-') ? (
+          <span class={`w-3 h-3 rounded-full ${item.color}`}></span>
+        ) : (
+          <i class={`fas ${item.icon || ''} ${item.color}`}></i>
+        )}
+        {item.label}
+      </span>
+    ))}
+  </div>
+)}

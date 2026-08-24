@@ -1,0 +1,291 @@
+---
+// src/components/ui/registration/RegistrationModal.astro
+// Modal nativo con diseño FORMAX-J: Montserrat, gradientes verde-amarillo, dark mode
+import { registrationData } from '@data/registration';
+
+export interface Props {
+  data?: typeof registrationData;
+}
+
+const { data = registrationData } = Astro.props;
+---
+
+<dialog
+  id="registration-modal"
+  class="fixed inset-0 z-[100] m-auto p-0 bg-transparent backdrop:bg-black/60 backdrop-blur-sm max-w-lg w-[calc(100%-2rem)] rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700 open:animate-fadeIn"
+>
+  <div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col font-display">
+    
+    {/* Header con Gradiente FORMAX-J */}
+    <div class="bg-gradient-to-r from-green-600 to-yellow-500 p-6 text-white relative">
+      <button
+        type="button"
+        id="modal-close-btn"
+        class="absolute top-4 right-4 text-white/90 hover:text-white bg-white/20 hover:bg-white/30 p-2 rounded-full transition cursor-pointer"
+        aria-label="Cerrar modal"
+      >
+        <i class="fas fa-times text-lg"></i>
+      </button>
+      
+      <span class="text-xs font-semibold uppercase tracking-wider text-yellow-200 block">
+        Formulario Oficial de Pre-Inscripción
+      </span>
+      <h3 class="text-xl font-bold text-white mt-1 font-display">
+        {data.clubName || 'Club Deportivo FORMAX-J'}
+      </h3>
+      <p class="text-xs text-white/90 mt-1">
+        Valor de matrícula: <strong class="text-white text-sm">{data.price}</strong> (Pago único)
+      </p>
+    </div>
+
+    {/* Formulario */}
+    <div class="p-6">
+      <form id="enrollment-form" class="space-y-4">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Nombre Deportista */}
+          <div class="space-y-1.5 sm:col-span-2">
+            <label class="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+              <i class="fas fa-user text-green-500 text-[10px]"></i>
+              Nombre del Deportista *
+            </label>
+            <input
+              type="text"
+              name="nombreDeportista"
+              required
+              placeholder="Ej. Mateo Gómez"
+              class="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+            />
+          </div>
+
+          {/* Edad */}
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+              <i class="fas fa-birthday-cake text-yellow-500 text-[10px]"></i>
+              Edad *
+            </label>
+            <input
+              type="number"
+              name="edad"
+              required
+              min="3"
+              max="60"
+              placeholder="Ej. 7"
+              class="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+            />
+          </div>
+
+          {/* Talla Camiseta */}
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+              <i class="fas fa-tshirt text-green-500 text-[10px]"></i>
+              Talla Camiseta
+            </label>
+            <select
+              name="tallaCamiseta"
+              class="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+            >
+              <option value="6">Talla 6 (Infantil)</option>
+              <option value="8">Talla 8 (Infantil)</option>
+              <option value="10">Talla 10 (Infantil)</option>
+              <option value="12" selected>Talla 12 (Junior)</option>
+              <option value="14">Talla 14 (Junior)</option>
+              <option value="16">Talla 16 (Juvenil)</option>
+              <option value="S">Talla S (Adulto)</option>
+              <option value="M">Talla M (Adulto)</option>
+              <option value="L">Talla L (Adulto)</option>
+            </select>
+          </div>
+
+          {/* Acudiente */}
+          <div class="space-y-1.5 sm:col-span-2">
+            <label class="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+              <i class="fas fa-user-friends text-yellow-500 text-[10px]"></i>
+              Nombre de Acudiente / Tutor *
+            </label>
+            <input
+              type="text"
+              name="acudiente"
+              required
+              placeholder="Ej. Carolina Martínez (Madre)"
+              class="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+            />
+          </div>
+
+          {/* WhatsApp */}
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+              <i class="fab fa-whatsapp text-green-500 text-[10px]"></i>
+              WhatsApp / Teléfono *
+            </label>
+            <input
+              type="tel"
+              name="telefono"
+              required
+              placeholder="300 123 4567"
+              pattern="[0-9]{10}"
+              class="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+            />
+          </div>
+
+          {/* EPS */}
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+              <i class="fas fa-heartbeat text-yellow-500 text-[10px]"></i>
+              EPS / Seguro Médico *
+            </label>
+            <input
+              type="text"
+              name="eps"
+              required
+              placeholder="Ej. Sura / Sanitas / Sisbén"
+              class="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+            />
+          </div>
+        </div>
+
+        {/* Nota legal */}
+        <div class="p-3.5 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl text-xs text-yellow-800 dark:text-yellow-200 border border-yellow-200 dark:border-yellow-800 flex items-start gap-2.5">
+          <i class="fas fa-exclamation-circle text-yellow-600 dark:text-yellow-400 mt-0.5"></i>
+          <span>
+            Al enviar este formulario aceptas que el valor de <strong>{data.price}</strong> corresponde a matrícula, dotación y carné. 
+            <strong class="block mt-1">Las mensualidades se cancelan por separado.</strong>
+          </span>
+        </div>
+
+        {/* Botones */}
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-end gap-3">
+          <button
+            type="button"
+            id="modal-cancel-btn"
+            class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer transition"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold px-6 py-2.5 rounded-xl transition shadow-lg hover:shadow-green-500/30 active:scale-[0.98] cursor-pointer font-display"
+          >
+            <i class="fab fa-whatsapp text-lg"></i>
+            <span>Enviar a WhatsApp Oficial</span>
+          </button>
+        </div>
+
+      </form>
+
+      {/* Mensaje de Éxito */}
+      <div id="modal-success" class="hidden text-center py-8 space-y-5">
+        <div class="w-20 h-20 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto shadow-inner">
+          <i class="fas fa-check text-3xl"></i>
+        </div>
+        <h4 class="text-xl font-bold text-gray-900 dark:text-white font-display">¡Pre-Inscripción Lista!</h4>
+        <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed max-w-sm mx-auto">
+          Hemos preparado tus datos para coordinar con el club la asignación de tu kit técnico.
+        </p>
+        <button
+          type="button"
+          id="modal-done-btn"
+          class="w-full bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-gray-900 font-medium py-3 rounded-xl transition cursor-pointer font-display"
+        >
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</dialog>
+
+{/* Script nativo - Sin TypeScript annotations */}
+<script is:inline>
+  function setupRegistrationModal() {
+    const dialog = document.getElementById('registration-modal');
+    const openButtons = document.querySelectorAll('[data-open-enroll-modal]');
+    const closeBtn = document.getElementById('modal-close-btn');
+    const cancelBtn = document.getElementById('modal-cancel-btn');
+    const doneBtn = document.getElementById('modal-done-btn');
+    const form = document.getElementById('enrollment-form');
+    const successBox = document.getElementById('modal-success');
+
+    if (!dialog) return;
+
+    const openModal = () => {
+      if (form) form.classList.remove('hidden');
+      if (successBox) successBox.classList.add('hidden');
+      dialog.showModal();
+      document.body.style.overflow = 'hidden'; // Prevenir scroll de fondo
+    };
+
+    const closeModal = () => {
+      dialog.close();
+      document.body.style.overflow = '';
+    };
+
+    // Abrir modal desde cualquier botón con [data-open-enroll-modal]
+    openButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+      });
+    });
+
+    // Cerrar con botones
+    closeBtn?.addEventListener('click', closeModal);
+    cancelBtn?.addEventListener('click', closeModal);
+    doneBtn?.addEventListener('click', closeModal);
+
+    // Cerrar al hacer click fuera del modal
+    dialog.addEventListener('click', (e) => {
+      const rect = dialog.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) closeModal();
+    });
+
+    // Cerrar con tecla Escape
+    dialog.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      closeModal();
+    });
+
+    // Submit del formulario → WhatsApp
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const nombre = formData.get('nombreDeportista');
+      const edad = formData.get('edad');
+      const talla = formData.get('tallaCamiseta');
+      const acudiente = formData.get('acudiente');
+      const tel = formData.get('telefono');
+      const eps = formData.get('eps');
+
+      const whatsappText = `¡Hola Club FORMAX-J! Deseo formalizar la pre-inscripción:
+• Deportista: ${nombre} (${edad} años)
+• Talla Camiseta: ${talla}
+• Acudiente: ${acudiente}
+• Teléfono: ${tel}
+• EPS: ${eps}
+• Valor de Inscripción: ${data.price} (Pago único)`;
+
+      // Abrir WhatsApp
+      window.open(`https://wa.me/${data.whatsappContact || '573001234567'}?text=${encodeURIComponent(whatsappText)}`, '_blank');
+      
+      // Mostrar éxito
+      if (form) form.classList.add('hidden');
+      if (successBox) successBox.classList.remove('hidden');
+    });
+  }
+
+  // Inicializar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupRegistrationModal);
+  } else {
+    setupRegistrationModal();
+  }
+  
+  // Para Astro con view transitions
+  document.addEventListener('astro:after-swap', setupRegistrationModal);
+</script>

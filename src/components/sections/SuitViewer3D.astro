@@ -1,0 +1,795 @@
+---
+// src/components/sections/SuitViewer3D.astro
+// Visor 3D del enterizo y la camiseta. Three.js puro (sin React), cargado
+// bajo demanda cuando la sección entra en pantalla.
+---
+
+<section id="modelado" class="py-24 bg-gray-950 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-bold uppercase tracking-wider mb-4">
+        <span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span>
+        Modelado 3D interactivo · 360°
+      </span>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-white">
+        Explora la dotación en <span class="gradient-text">360°</span>
+      </h2>
+      <p class="text-gray-400 mt-3">
+        Gira la prenda con el mouse o el dedo, cambia entre el enterizo y la camiseta,
+        y escribe tu nombre y dorsal para verlos en la espalda en tiempo real.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <!-- Lienzo 3D -->
+      <div class="lg:col-span-7">
+        <div
+          id="suitStage"
+          class="relative rounded-3xl overflow-hidden border border-gray-800 bg-gradient-to-b from-gray-900 to-black aspect-[4/5] sm:aspect-[5/4] lg:aspect-auto lg:h-[620px]"
+        >
+          <canvas id="suitCanvas" class="absolute inset-0 w-full h-full block touch-none"></canvas>
+
+          <div
+            id="suitLoader"
+            class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-gray-500 text-sm"
+          >
+            <span class="loader"></span>
+            Cargando modelado 3D…
+          </div>
+
+          <noscript>
+            <img src="/dotacion/track-action.jpg" alt="Dotación FORMAX-J" class="absolute inset-0 w-full h-full object-cover" />
+          </noscript>
+
+          <!-- Vistas -->
+          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1 p-1 rounded-full bg-black/60 backdrop-blur border border-white/10">
+            <button type="button" data-view="front" class="suit-view px-4 py-2 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-colors">Frente</button>
+            <button type="button" data-view="back" class="suit-view px-4 py-2 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-colors">Espalda</button>
+            <button type="button" data-view="side" class="suit-view px-4 py-2 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-colors">Perfil</button>
+          </div>
+
+          <button
+            type="button"
+            id="suitSpin"
+            aria-pressed="true"
+            class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 backdrop-blur border border-white/10 text-white/80 hover:text-white transition-colors"
+            title="Rotación automática"
+          >
+            <i class="fas fa-rotate"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel de personalización -->
+      <div class="lg:col-span-5">
+        <div class="h-full rounded-3xl border border-gray-800 bg-gray-900/60 p-6 sm:p-7 flex flex-col">
+          <div class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Prenda</div>
+          <div class="grid grid-cols-2 gap-3 mb-7">
+            <button
+              type="button"
+              data-garment="licra_pro"
+              class="suit-garment rounded-2xl border p-4 text-left transition-all border-green-500 bg-green-500/10"
+            >
+              <i class="fas fa-bolt text-green-400 mb-2"></i>
+              <div class="text-sm font-bold text-white leading-tight">Enterizo Pro</div>
+              <div class="text-[11px] text-gray-400 mt-0.5">Competencia</div>
+            </button>
+            <button
+              type="button"
+              data-garment="camiseta_entrenamiento"
+              class="suit-garment rounded-2xl border p-4 text-left transition-all border-gray-700 hover:border-gray-600"
+            >
+              <i class="fas fa-shirt text-gray-400 mb-2"></i>
+              <div class="text-sm font-bold text-white leading-tight">Camiseta Dry-Fit</div>
+              <div class="text-[11px] text-gray-400 mt-0.5">Entrenamiento</div>
+            </button>
+          </div>
+
+          <div class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Personalización</div>
+          <div class="space-y-4">
+            <label class="block">
+              <span class="text-xs text-gray-400">Nombre en la espalda</span>
+              <input
+                id="suitName"
+                type="text"
+                maxlength="12"
+                value="FORMAX-J"
+                class="mt-1 w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-white uppercase tracking-wider focus:ring-2 focus:ring-green-500 outline-none"
+              />
+            </label>
+            <label class="block">
+              <span class="text-xs text-gray-400">Dorsal</span>
+              <input
+                id="suitNumber"
+                type="text"
+                inputmode="numeric"
+                maxlength="3"
+                value="07"
+                class="mt-1 w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-white text-2xl font-bold tracking-widest focus:ring-2 focus:ring-green-500 outline-none"
+              />
+            </label>
+            <label class="flex items-center justify-between gap-4 px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 cursor-pointer">
+              <span class="text-sm text-gray-300">Bandera de Colombia en el pecho</span>
+              <input id="suitFlag" type="checkbox" checked class="w-5 h-5 accent-green-500" />
+            </label>
+          </div>
+
+          <div id="suitSpecs" class="mt-7 pt-6 border-t border-gray-800 space-y-3 text-xs"></div>
+
+          <button
+            type="button"
+            id="suitToQuote"
+            class="mt-auto pt-6 text-center"
+          >
+            <span class="block w-full py-3 px-6 rounded-full bg-gradient-to-r from-green-600 to-green-500 text-white font-semibold hover:shadow-lg hover:shadow-green-500/30 transition-all">
+              <i class="fas fa-arrow-down mr-2"></i>Usar este diseño en el cotizador
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const stage = document.getElementById('suitStage');
+  const canvas = document.getElementById('suitCanvas') as HTMLCanvasElement | null;
+
+  if (stage && canvas) {
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        obs.disconnect();
+        boot();
+      },
+      { rootMargin: '300px' }
+    );
+    observer.observe(stage);
+  }
+
+  async function boot() {
+    const loader = document.getElementById('suitLoader');
+    let THREE: any, OrbitControls: any;
+    try {
+      THREE = await import('three');
+      ({ OrbitControls } = await import('three/examples/jsm/controls/OrbitControls.js'));
+    } catch {
+      if (loader) loader.textContent = 'No se pudo cargar el visor 3D.';
+      return;
+    }
+    if (loader) loader.remove();
+    init(THREE, OrbitControls);
+  }
+
+  // ---------------------------------------------------------------- anatomía
+  // Perfil del cuerpo: (altura, radio en X, radio en Z). El torso no es un
+  // cilindro: cada altura tiene su propio ancho y fondo, por eso se ven hombros,
+  // pecho y cintura.
+  const BODY_PROFILE: [number, number, number][] = [
+    [-0.32, 0.178, 0.118],
+    [-0.24, 0.176, 0.116],
+    [-0.16, 0.174, 0.112],
+    [-0.1, 0.175, 0.11],
+    [0.02, 0.16, 0.102],
+    [0.14, 0.15, 0.096],
+    [0.28, 0.168, 0.108],
+    [0.42, 0.19, 0.12],
+    [0.52, 0.205, 0.116],
+    [0.58, 0.196, 0.104],
+    [0.64, 0.12, 0.092],
+    [0.74, 0.072, 0.068],
+  ];
+
+  // Brazo: (altura, desplazamiento en X, radio)
+  const ARM_PROFILE: [number, number, number][] = [
+    [0.47, 0.172, 0.063],
+    [0.44, 0.216, 0.061],
+    [0.32, 0.252, 0.054],
+    [0.2, 0.268, 0.047],
+    [0.04, 0.286, 0.04],
+    [-0.13, 0.3, 0.033],
+  ];
+
+  // Pierna: (altura, desplazamiento en X, radio)
+  const LEG_PROFILE: [number, number, number][] = [
+    [-0.02, 0.086, 0.108],
+    [-0.25, 0.083, 0.092],
+    [-0.45, 0.079, 0.07],
+    [-0.62, 0.074, 0.077],
+    [-0.78, 0.07, 0.058],
+    [-0.9, 0.068, 0.046],
+  ];
+
+  /** Interpola el perfil a una altura dada. */
+  function sample(profile: [number, number, number][], y: number) {
+    const first = profile[0];
+    const last = profile[profile.length - 1];
+    if (y <= first[0]) return [first[1], first[2]];
+    if (y >= last[0]) return [last[1], last[2]];
+    for (let i = 0; i < profile.length - 1; i++) {
+      const [y0, a0, b0] = profile[i];
+      const [y1, a1, b1] = profile[i + 1];
+      if (y >= y0 && y <= y1) {
+        const t = (y - y0) / (y1 - y0);
+        // suavizado de Hermite: sin esquinas en las uniones del perfil
+        const s = t * t * (3 - 2 * t);
+        return [a0 + (a1 - a0) * s, b0 + (b1 - b0) * s];
+      }
+    }
+    return [last[1], last[2]];
+  }
+
+  /**
+   * Superficie de revolución con sección superelíptica y radios variables.
+   * La U da la vuelta al cuerpo con la costura en el costado: U=0.25 es el
+   * frente y U=0.75 la espalda, así ni el escudo ni el dorsal caen en la unión.
+   */
+  function loft(
+    THREE: any,
+    rows: { y: number; rx: number; rz: number; dx: number }[],
+    radial: number,
+    squareness: number,
+    capBottom: boolean,
+    capTop: boolean
+  ) {
+    const position: number[] = [];
+    const uv: number[] = [];
+    const index: number[] = [];
+    const y0 = rows[0].y;
+    const y1 = rows[rows.length - 1].y;
+    const exp = 2 / squareness;
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const v = (row.y - y0) / (y1 - y0 || 1);
+      // estrecha el anillo hasta casi cero para tapar los extremos
+      const cap = (capBottom && i === 0) || (capTop && i === rows.length - 1) ? 0.02 : 1;
+      for (let j = 0; j <= radial; j++) {
+        const u = j / radial;
+        // a = PI - u*2PI: la U avanza hacia la derecha del espectador y U=0.25
+        // cae en el pecho (+Z) y U=0.75 en la espalda (-Z). Invertir el sentido
+        // del anillo obliga a invertir también el devanado (ver setIndex).
+        const a = Math.PI - u * Math.PI * 2;
+        const c = Math.cos(a);
+        const s = Math.sin(a);
+        position.push(
+          row.dx + row.rx * cap * Math.sign(c) * Math.abs(c) ** exp,
+          row.y,
+          row.rz * cap * Math.sign(s) * Math.abs(s) ** exp
+        );
+        uv.push(u, v);
+      }
+    }
+
+    for (let i = 0; i < rows.length - 1; i++) {
+      for (let j = 0; j < radial; j++) {
+        const a = i * (radial + 1) + j;
+        const b = a + radial + 1;
+        index.push(a, a + 1, b, b, a + 1, b + 1);
+      }
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    geo.setIndex(index);
+    geo.computeVertexNormals();
+    return geo;
+  }
+
+  /** Construye las filas de un tramo del cuerpo, con grosor de tela opcional. */
+  function rowsFor(
+    profile: [number, number, number][],
+    yBottom: number,
+    yTop: number,
+    steps: number,
+    thickness: number,
+    mirror: number,
+    radial = false
+  ) {
+    const rows = [];
+    for (let i = 0; i <= steps; i++) {
+      const y = yBottom + ((yTop - yBottom) * i) / steps;
+      const [a, b] = sample(profile, y);
+      rows.push(
+        radial
+          ? { y, rx: b + thickness, rz: b + thickness, dx: a * mirror }
+          : { y, rx: a + thickness, rz: b + thickness, dx: 0 }
+      );
+    }
+    return rows;
+  }
+
+  // ---------------------------------------------------------------- texturas
+  const EMERALD = '#0f9b63';
+  const EMERALD_DARK = '#04543a';
+  const GOLD = '#e7b93f';
+  const INK = '#0a0c0f';
+
+  function roundedText(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    x: number,
+    y: number,
+    font: string,
+    fill: string,
+    stroke?: string,
+    lineWidth = 6
+  ) {
+    ctx.font = font;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    if (stroke) {
+      ctx.lineWidth = lineWidth;
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = stroke;
+      ctx.strokeText(text, x, y);
+    }
+    ctx.fillStyle = fill;
+    ctx.fillText(text, x, y);
+  }
+
+  /** Canal acanalado Speed-Rib: micro-líneas diagonales. */
+  function ribs(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, alpha: number) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.clip();
+    ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+    ctx.lineWidth = 2;
+    for (let i = -h; i < w + h; i += 9) {
+      ctx.beginPath();
+      ctx.moveTo(x + i, y + h);
+      ctx.lineTo(x + i + h * 0.45, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function shield(ctx: CanvasRenderingContext2D, cx: number, cy: number, w: number, h: number) {
+    ctx.beginPath();
+    ctx.moveTo(cx - w / 2, cy - h / 2);
+    ctx.lineTo(cx + w / 2, cy - h / 2);
+    ctx.lineTo(cx + w / 2, cy + h * 0.1);
+    ctx.quadraticCurveTo(cx + w / 2, cy + h / 2, cx, cy + h / 2);
+    ctx.quadraticCurveTo(cx - w / 2, cy + h / 2, cx - w / 2, cy + h * 0.1);
+    ctx.closePath();
+  }
+
+  function flag(ctx: CanvasRenderingContext2D, cx: number, cy: number, w: number, h: number) {
+    const x = cx - w / 2;
+    ctx.fillStyle = '#fcd116';
+    ctx.fillRect(x, cy - h / 2, w, h / 2);
+    ctx.fillStyle = '#003893';
+    ctx.fillRect(x, cy, w, h / 4);
+    ctx.fillStyle = '#ce1126';
+    ctx.fillRect(x, cy + h / 4, w, h / 4);
+    ctx.strokeStyle = 'rgba(255,255,255,.55)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(x, cy - h / 2, w, h);
+  }
+
+  type Custom = { garment: string; name: string; number: string; withFlag: boolean };
+
+  function torsoTexture(THREE: any, o: Custom) {
+    const W = 2048;
+    const H = 1024;
+    const c = document.createElement('canvas');
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext('2d')!;
+    const licra = o.garment === 'licra_pro';
+    const front = W * 0.25;
+    const back = W * 0.75;
+
+    // base
+    if (licra) {
+      const g = ctx.createLinearGradient(0, H, 0, 0);
+      g.addColorStop(0, EMERALD_DARK);
+      g.addColorStop(0.55, EMERALD);
+      g.addColorStop(1, '#13b073');
+      ctx.fillStyle = g;
+    } else {
+      ctx.fillStyle = INK;
+    }
+    ctx.fillRect(0, 0, W, H);
+
+    // paneles laterales negros (las costuras caen en U=0 y U=0.5)
+    ctx.fillStyle = licra ? 'rgba(6,10,12,.92)' : 'rgba(255,255,255,.04)';
+    [0, W * 0.5, W].forEach((x) => ctx.fillRect(x - W * 0.045, 0, W * 0.09, H));
+    ctx.fillStyle = GOLD;
+    [0, W * 0.5, W].forEach((x) => {
+      ctx.fillRect(x - W * 0.05, 0, 5, H);
+      ctx.fillRect(x + W * 0.05 - 5, 0, 5, H);
+    });
+
+    // hombros acanalados
+    ribs(ctx, 0, 0, W, H * 0.2, licra ? 0.14 : 0.07);
+
+    // franja dorsal de la camiseta
+    if (!licra) {
+      const g = ctx.createLinearGradient(back - 90, 0, back + 90, 0);
+      g.addColorStop(0, 'rgba(15,155,99,0)');
+      g.addColorStop(0.5, 'rgba(15,155,99,.95)');
+      g.addColorStop(1, 'rgba(15,155,99,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(back - 120, 0, 240, H);
+      ctx.fillStyle = GOLD;
+      ctx.fillRect(back - 6, 0, 12, H);
+    }
+
+    // banda inferior dorada (dobladillo)
+    ctx.fillStyle = GOLD;
+    ctx.fillRect(0, H - 26, W, 10);
+    ctx.fillStyle = 'rgba(0,0,0,.55)';
+    ctx.fillRect(0, H - 16, W, 16);
+
+    // ---- pecho ----
+    const chestY = H * 0.29;
+    if (licra) {
+      ctx.fillStyle = 'rgba(0,0,0,.35)';
+      shield(ctx, front, chestY, 190, 210);
+      ctx.fill();
+      ctx.strokeStyle = GOLD;
+      ctx.lineWidth = 7;
+      shield(ctx, front, chestY, 190, 210);
+      ctx.stroke();
+      roundedText(ctx, 'FORMAX-J', front, chestY - 10, 'bold 40px Montserrat, sans-serif', GOLD);
+      roundedText(ctx, 'PATINAJE', front, chestY + 34, 'bold 22px Montserrat, sans-serif', '#ffffff');
+    } else {
+      roundedText(ctx, 'FORMAX-J', front - 150, chestY, 'bold 42px Montserrat, sans-serif', GOLD);
+    }
+    if (o.withFlag) flag(ctx, licra ? front : front - 150, chestY + (licra ? 150 : 46), 120, 54);
+
+    // patrocinador en el pecho
+    roundedText(ctx, 'CITYRUN', front, H * 0.62, 'bold 34px Montserrat, sans-serif', 'rgba(255,255,255,.85)');
+
+    // ---- espalda ----
+    roundedText(ctx, 'CITYRUN', back, H * 0.18, 'bold 30px Montserrat, sans-serif', 'rgba(255,255,255,.7)');
+
+    const name = (o.name || '').toUpperCase().slice(0, 12);
+    if (name) {
+      roundedText(ctx, name, back, H * 0.36, 'bold 64px Montserrat, sans-serif', '#ffffff', 'rgba(0,0,0,.65)', 10);
+    }
+    const num = (o.number || '').replace(/\D/g, '').slice(0, 3);
+    if (num) {
+      roundedText(ctx, num, back, H * 0.55, 'bold 190px Montserrat, sans-serif', GOLD, 'rgba(0,0,0,.7)', 14);
+    }
+    roundedText(ctx, 'CLUB DE PATINAJE', back, H * 0.72, 'bold 26px Montserrat, sans-serif', 'rgba(255,255,255,.55)');
+
+    return finish(THREE, c);
+  }
+
+  function limbTexture(THREE: any, garment: string, leg: boolean) {
+    const W = 512;
+    const H = 1024;
+    const c = document.createElement('canvas');
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext('2d')!;
+    const licra = garment === 'licra_pro';
+
+    ctx.fillStyle = licra ? EMERALD : INK;
+    ctx.fillRect(0, 0, W, H);
+
+    // vivo lateral fino (el panel ancho hacía ver el brazo como una tabla)
+    if (leg) {
+      ctx.fillStyle = licra ? 'rgba(6,10,12,.85)' : 'rgba(255,255,255,.05)';
+      ctx.fillRect(W * 0.46, 0, W * 0.08, H);
+    }
+    ctx.fillStyle = GOLD;
+    ctx.fillRect(W * 0.5 - 3, 0, 6, H);
+
+    ribs(ctx, 0, 0, W, H, licra ? 0.12 : 0.05);
+
+    // puño dorado
+    ctx.fillStyle = GOLD;
+    ctx.fillRect(0, H - 40, W, 12);
+    ctx.fillStyle = 'rgba(0,0,0,.6)';
+    ctx.fillRect(0, H - 28, W, 28);
+
+    if (!leg) {
+      ctx.save();
+      ctx.translate(W * 0.2, H * 0.4);
+      ctx.rotate(-Math.PI / 2);
+      roundedText(ctx, 'CITYRUN', 0, 0, 'bold 34px Montserrat, sans-serif', 'rgba(255,255,255,.9)');
+      ctx.restore();
+    }
+
+    return finish(THREE, c);
+  }
+
+  function finish(THREE: any, c: HTMLCanvasElement) {
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 8;
+    tex.wrapS = THREE.RepeatWrapping;
+    return tex;
+  }
+
+  // ------------------------------------------------------------------ escena
+  function init(THREE: any, OrbitControls: any) {
+    const stage = document.getElementById('suitStage')!;
+    const canvas = document.getElementById('suitCanvas') as HTMLCanvasElement;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+    camera.position.set(0.18, 0.1, 4.05);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.enablePan = false;
+    controls.minDistance = 2.2;
+    controls.maxDistance = 6.5;
+    controls.minPolarAngle = Math.PI * 0.18;
+    controls.maxPolarAngle = Math.PI * 0.86;
+    controls.target.set(0, 0.0, 0);
+    controls.autoRotateSpeed = 1.1;
+    controls.autoRotate = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // luces: clave + relleno frío + contraluz dorado
+    scene.add(new THREE.HemisphereLight(0x9fc0ff, 0x05070a, 0.7));
+    const key = new THREE.DirectionalLight(0xffffff, 2.6);
+    key.position.set(2.6, 3.4, 3.2);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.camera.near = 1;
+    key.shadow.camera.far = 12;
+    key.shadow.camera.left = -1.5;
+    key.shadow.camera.right = 1.5;
+    key.shadow.camera.top = 2;
+    key.shadow.camera.bottom = -1.5;
+    key.shadow.bias = -0.0012;
+    scene.add(key);
+
+    const fill = new THREE.DirectionalLight(0x7fb6ff, 0.8);
+    fill.position.set(-3.4, 1.6, 2.2);
+    scene.add(fill);
+
+    const front = new THREE.DirectionalLight(0xffffff, 0.55);
+    front.position.set(0, 0.6, 4);
+    scene.add(front);
+
+    const rim = new THREE.DirectionalLight(0xffd9a8, 0.95);
+    rim.position.set(-1.2, 2.4, -3.4);
+    scene.add(rim);
+
+    // plataforma
+    const platform = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.72, 0.78, 0.05, 72),
+      new THREE.MeshStandardMaterial({ color: 0x0b0e11, roughness: 0.88, metalness: 0.04 })
+    );
+    platform.position.y = -0.97;
+    platform.receiveShadow = true;
+    scene.add(platform);
+
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(0.73, 0.007, 12, 96),
+      new THREE.MeshStandardMaterial({ color: 0x0f9b63, emissive: 0x0f9b63, emissiveIntensity: 0.8 })
+    );
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = -0.92;
+    scene.add(ring);
+
+    // materiales
+    const skin = new THREE.MeshStandardMaterial({ color: 0x4a515c, roughness: 0.82, metalness: 0.05 });
+    const fabric = (map: any) =>
+      new THREE.MeshPhysicalMaterial({
+        map,
+        roughness: 0.62,
+        metalness: 0.04,
+        sheen: 0.7,
+        sheenRoughness: 0.75,
+        sheenColor: new THREE.Color(0xffffff),
+        clearcoat: 0.1,
+      });
+
+    const torsoMat = fabric(null);
+    const armMat = fabric(null);
+    const legMat = fabric(null);
+
+    const mesh = (geo: any, mat: any) => {
+      const m = new THREE.Mesh(geo, mat);
+      m.castShadow = true;
+      m.receiveShadow = true;
+      scene.add(m);
+      return m;
+    };
+
+    const figure = new THREE.Group();
+    scene.add(figure);
+    const add = (geo: any, mat: any) => {
+      const m = mesh(geo, mat);
+      scene.remove(m);
+      figure.add(m);
+      return m;
+    };
+
+    // --- maniquí (lo que no cubre la prenda) ---
+    add(loft(THREE, rowsFor(BODY_PROFILE, -0.14, 0.74, 34, 0, 1), 96, 2.7, true, true), skin);
+    [1, -1].forEach((side) => {
+      add(loft(THREE, rowsFor(ARM_PROFILE, -0.13, 0.47, 20, 0, side, true), 48, 2, true, true), skin);
+      add(loft(THREE, rowsFor(LEG_PROFILE, -0.9, -0.02, 22, 0, side, true), 48, 2.2, true, true), skin);
+    });
+
+    const head = add(new THREE.SphereGeometry(0.125, 48, 36), skin);
+    head.scale.set(1, 1.25, 1.06);
+    head.position.y = 0.9;
+
+    // --- prendas (capa sobre el maniquí) ---
+    const T = 0.014;
+    const torsoLicra = loft(THREE, rowsFor(BODY_PROFILE, -0.1, 0.66, 40, T, 1), 128, 2.7, false, false);
+    const torsoCamiseta = loft(THREE, rowsFor(BODY_PROFILE, -0.19, 0.64, 40, T + 0.008, 1), 128, 2.7, false, false);
+    const torso = add(torsoLicra, torsoMat);
+
+    const sleeves: any[] = [];
+    const legs: any[] = [];
+    [1, -1].forEach((side) => {
+      sleeves.push({
+        mesh: add(loft(THREE, rowsFor(ARM_PROFILE, -0.11, 0.47, 22, T, side, true), 56, 2, false, true), armMat),
+        long: loft(THREE, rowsFor(ARM_PROFILE, -0.11, 0.47, 22, T, side, true), 56, 2, false, true),
+        short: loft(THREE, rowsFor(ARM_PROFILE, 0.26, 0.47, 14, T + 0.006, side, true), 56, 2, false, true),
+      });
+      legs.push(add(loft(THREE, rowsFor(LEG_PROFILE, -0.84, -0.06, 24, T, side, true), 56, 2.2, false, false), legMat));
+
+      // hombrera: tapa la unión brazo-torso (antes se veía el corte del tubo)
+      const cap = add(new THREE.SphereGeometry(0.084, 32, 24), armMat);
+      cap.scale.set(1.25, 1.05, 1.1);
+      cap.position.set(0.176 * side, 0.462, 0);
+    });
+
+    // ------------------------------------------------------------ estado UI
+    const state: Custom = { garment: 'licra_pro', name: 'FORMAX-J', number: '07', withFlag: true };
+
+    const SPECS: Record<string, [string, string][]> = {
+      licra_pro: [
+        ['Material', 'Poliamida 80% + Lycra Power 20% (220 g/m²)'],
+        ['Aerodinámica', 'Speed-Rib · hasta -14.2% de arrastre'],
+        ['Protección', 'UPF 50+ certificado'],
+        ['Ajuste', 'Aero-Race Fit (segunda piel)'],
+      ],
+      camiseta_entrenamiento: [
+        ['Material', 'Poliéster Dry-Tech 100% micro-perforado (140 g/m²)'],
+        ['Transpiración', 'Secado completo en 12 minutos'],
+        ['Protección', 'UPF 35+ activa'],
+        ['Ajuste', 'Athletic Training Fit'],
+      ],
+    };
+
+    const specsEl = document.getElementById('suitSpecs')!;
+
+    function repaint() {
+      const licra = state.garment === 'licra_pro';
+
+      torsoMat.map?.dispose();
+      armMat.map?.dispose();
+      legMat.map?.dispose();
+      torsoMat.map = torsoTexture(THREE, state);
+      armMat.map = limbTexture(THREE, state.garment, false);
+      legMat.map = limbTexture(THREE, state.garment, true);
+      torsoMat.needsUpdate = armMat.needsUpdate = legMat.needsUpdate = true;
+
+      torso.geometry = licra ? torsoLicra : torsoCamiseta;
+      sleeves.forEach((s) => (s.mesh.geometry = licra ? s.long : s.short));
+      legs.forEach((l) => (l.visible = licra));
+
+      specsEl.innerHTML = SPECS[state.garment]
+        .map(
+          ([k, v]) =>
+            `<div class="flex justify-between gap-4"><span class="text-gray-500">${k}</span><span class="text-gray-200 font-semibold text-right">${v}</span></div>`
+        )
+        .join('');
+
+      document.querySelectorAll('.suit-garment').forEach((btn) => {
+        const on = (btn as HTMLElement).dataset.garment === state.garment;
+        btn.className = `suit-garment rounded-2xl border p-4 text-left transition-all ${
+          on ? 'border-green-500 bg-green-500/10' : 'border-gray-700 hover:border-gray-600'
+        }`;
+      });
+    }
+
+    document.querySelectorAll('.suit-garment').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        state.garment = (btn as HTMLElement).dataset.garment!;
+        repaint();
+      })
+    );
+
+    const nameInput = document.getElementById('suitName') as HTMLInputElement;
+    const numberInput = document.getElementById('suitNumber') as HTMLInputElement;
+    const flagInput = document.getElementById('suitFlag') as HTMLInputElement;
+
+    nameInput.addEventListener('input', () => {
+      state.name = nameInput.value;
+      repaint();
+    });
+    numberInput.addEventListener('input', () => {
+      state.number = numberInput.value;
+      repaint();
+    });
+    flagInput.addEventListener('change', () => {
+      state.withFlag = flagInput.checked;
+      repaint();
+    });
+
+    // vistas
+    const VIEWS: Record<string, [number, number, number]> = {
+      front: [0, 0.1, 4.05],
+      back: [0, 0.1, -4.05],
+      side: [4.05, 0.1, 0.12],
+    };
+    let goal: any = null;
+    document.querySelectorAll('.suit-view').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const v = VIEWS[(btn as HTMLElement).dataset.view!];
+        goal = new THREE.Vector3(...v);
+        controls.autoRotate = false;
+        syncSpin();
+      })
+    );
+
+    const spinBtn = document.getElementById('suitSpin')!;
+    const syncSpin = () => {
+      spinBtn.setAttribute('aria-pressed', String(controls.autoRotate));
+      spinBtn.classList.toggle('text-green-400', controls.autoRotate);
+    };
+    spinBtn.addEventListener('click', () => {
+      controls.autoRotate = !controls.autoRotate;
+      syncSpin();
+    });
+    controls.addEventListener('start', () => {
+      controls.autoRotate = false;
+      goal = null;
+      syncSpin();
+    });
+    syncSpin();
+
+    // enlaza con el cotizador de la página
+    document.getElementById('suitToQuote')?.addEventListener('click', () => {
+      const qName = document.getElementById('qName') as HTMLInputElement | null;
+      const qNumber = document.getElementById('qNumber') as HTMLInputElement | null;
+      if (qName) qName.value = state.name;
+      if (qNumber) qNumber.value = state.number;
+      document.getElementById('cotizador')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // tamaño
+    const resize = () => {
+      const { clientWidth: w, clientHeight: h } = stage;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    new ResizeObserver(resize).observe(stage);
+    resize();
+
+    // El bucle solo se detiene si la pestaña está oculta. Gatearlo por
+    // visibilidad de la sección congelaba la escena: un cambio de prenda hecho
+    // fuera de pantalla no se llegaba a pintar nunca.
+    const draw = () => {
+      controls.update();
+      renderer.render(scene, camera);
+    };
+
+    renderer.setAnimationLoop(() => {
+      if (document.hidden) return;
+      if (goal) {
+        camera.position.lerp(goal, 0.08);
+        if (camera.position.distanceTo(goal) < 0.01) goal = null;
+      }
+      draw();
+    });
+
+    repaint();
+    draw();
+  }
+</script>

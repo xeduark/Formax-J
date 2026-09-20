@@ -1,19 +1,45 @@
-import type { AboutData } from '../types';
+import type { AboutData } from "../types";
 
 export const aboutData: AboutData = {
-  badge: 'Sobre Nosotros',
-  title: 'Más que un club, <span class="gradient-text">una familia veloz</span>',
-  description: 'En FORMAX-J formamos patinadores de velocidad de élite. Nuestra filosofía combina técnica, resistencia y mentalidad ganadora para llevar a cada patinador al siguiente nivel.',
+  badge: "Sobre Nosotros",
+  title:
+    ' Formación máxima<span class="gradient-text"> a través del deporte</span>',
+  description:
+    "En el Club Deportivo FORMAX-J construimos procesos de formación integral, modelando excelentes personas y grandes deportistas.",
   images: [
-    'https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184161/ni%C3%B1apatines_seylrj.jpg',
-    'https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184161/ni%C3%B1apatinesnegros_pp3cia.jpg',
-    'https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184160/patinespronegros_ubo62r.jpg',
-    'https://res.cloudinary.com/cx3z2ry1/image/upload/v1783628803/hero_n9nnbb.jpg'
+    "https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184161/ni%C3%B1apatines_seylrj.jpg",
+    "https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184161/ni%C3%B1apatinesnegros_pp3cia.jpg",
+    "https://res.cloudinary.com/cx3z2ry1/image/upload/v1785184160/patinespronegros_ubo62r.jpg",
+    "https://res.cloudinary.com/cx3z2ry1/image/upload/v1783628803/hero_n9nnbb.jpg",
   ],
   features: [
-    { icon: 'fa-tachometer-alt', title: 'Velocidad Pura', description: 'Especialistas en patinaje de velocidad en línea. Nuestros patinadores alcanzan velocidades increíbles con técnica perfecta y equipamiento de primer nivel.', color: 'green' },
-    { icon: 'fa-road', title: 'Entrenamiento en Pista y Ruta', description: 'Combinamos entrenamiento en pista ovalada con sesiones de ruta para desarrollar resistencia, técnica de viraje y velocidad en todos los terrenos.', color: 'yellow' },
-    { icon: 'fa-dumbbell', title: 'Preparación Física Integral', description: 'Programa de acondicionamiento físico especializado: fuerza, potencia, flexibilidad y resistencia cardiovascular para el máximo rendimiento.', color: 'blue' },
-    { icon: 'fa-brain', title: 'Mentalidad Ganadora', description: 'Trabajamos la psicología deportiva, estrategia de carrera y control del estrés para que cada patinador rinda al máximo en competición.', color: 'purple' }
-  ]
+    {
+      icon: "fa-child",
+      title: "Educación Física",
+      description:
+        "La Educación Física es la base para la formación integral de la persona, y mediante el desarrollo de las capacidades físicas, motrices y coordinativas se favorece el conocimiento corporal, el dominio del movimiento, la autonomía y la construcción de hábitos positivos para la vida.",
+      color: "green",
+    },
+    {
+      icon: "fa-graduation-cap",
+      title: "Escuela Básica",
+      description:
+        "Cada aprendizaje se construye de manera progresiva, respetando las características y el ritmo de cada deportista.",
+      color: "yellow",
+    },
+    {
+      icon: "fa-running",
+      title: "Formación Máxima",
+      description:
+        "A través de la disciplina, la constancia y el compromiso, acompañamos al deportista en la construcción de un proceso que le permita avanzar desde la formación deportiva hacia la especialización y el alto rendimiento.",
+      color: "blue",
+    },
+    {
+      icon: "fa-trophy",
+      title: "Alto rendimiento",
+      description:
+        "La planificación, la preparación física, el perfeccionamiento técnico y la experiencia competitiva se integran para que cada deportista pueda desarrollar su potencial y alcanzar su máximo nivel de rendimiento.",
+      color: "purple",
+    },
+  ],
 };

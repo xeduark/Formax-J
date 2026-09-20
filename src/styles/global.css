@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -25,7 +23,8 @@
 
 @layer components {
   ::-webkit-scrollbar { @apply w-2; }
-  ::-webkit-scrollbar-track { @apply bg-gray-900 dark:bg-gray-950; }
+  /* la pista era gris-900 también en claro: se veía una franja negra */
+  ::-webkit-scrollbar-track { @apply bg-gray-100 dark:bg-gray-900; }
   ::-webkit-scrollbar-thumb { @apply rounded; background: linear-gradient(to bottom, #22c55e, #eab308); }
   
   .glass-effect { @apply backdrop-blur-xl border border-white/10; background: rgba(255, 255, 255, 0.1); }
@@ -61,7 +60,23 @@
   .card-hover { transition: all 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275); }
   .card-hover:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15); }
   
+  /* Navbar glassy: legible sobre el hero oscuro y sobre fondo claro */
+  .nav-glass {
+    /* color fijo: no cambia al hacer scroll */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  }
+  .dark .nav-glass {
+    background: rgba(17, 24, 39, 0.6);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
   .nav-link { @apply relative; }
+  /* dos clases > una utilidad: gana sin !important */
+  .nav-link.active { color: #16a34a; }
+  .dark .nav-link.active { color: #4ade80; }
   .nav-link::after {
     content: '';
     @apply absolute bottom-[-4px] left-1/2 h-0.5 -translate-x-1/2;
@@ -73,12 +88,24 @@
   
   .section-reveal { opacity: 0; transform: translateY(40px); transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1); }
   .section-reveal.visible { @apply opacity-100 translate-y-0; }
+  /* Sin JS el sitio entero quedaba invisible: 40 bloques nacen en opacity 0 y
+     solo el observer los revela. Con JS activo, html lleva la clase .js. */
+  html:not(.js) .section-reveal { opacity: 1; transform: none; }
   
   .glow-hover { transition: filter 300ms ease; }
   .glow-hover:hover { filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.5)); }
   
   .mobile-menu { transform: translateX(100%); transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1); }
   .mobile-menu.open { @apply translate-x-0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
   
   .testimonial-card { transition: transform 400ms ease-in-out; }
   .testimonial-card:hover { transform: translateY(-8px); }
@@ -108,3 +135,42 @@
   .animate-shimmer { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); background-size: 200% 100%; animation: shimmer 3s infinite; }
   .loader { @apply rounded-full w-10 h-10 border-[3px] border-t-green-500; border-color: rgba(34, 197, 94, 0.2); animation: spin 1s linear infinite; }
 }
+
+/* Quien pide menos movimiento no debería recibir 40 revelados y 6 animaciones. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .section-reveal { opacity: 1 !important; transform: none !important; }
+  .card-hover:hover { transform: none; }
+}
+
+/* Foco visible y consistente: varios controles llevan outline-none. */
+:focus-visible {
+  outline: 2px solid #16a34a;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background: #16a34a;
+  color: #fff;
+  font-weight: 600;
+  transition: transform 200ms ease;
+}
+.skip-link:focus { transform: translate(-50%, 0); }

@@ -68,7 +68,7 @@ const categories = [
               <i class="fas fa-flag-checkered text-white text-5xl opacity-80 group-hover:opacity-100 transition-opacity"></i>
             </div>
           ) : (
-            <img src={item.url} alt={item.title} class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
+            <img src={item.url} alt={item.title} loading="lazy" decoding="async" width="640" height="288" class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700" />
           )}
           <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
             <div>

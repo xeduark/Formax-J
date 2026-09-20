@@ -13,7 +13,6 @@ const { data } = Astro.props;
 <section id="horarios" class="py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
   <div class="absolute top-0 right-0 w-96 h-96 bg-green-100/50 dark:bg-green-900/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
   <div class="absolute bottom-0 left-0 w-64 h-64 bg-yellow-100/50 dark:bg-yellow-900/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <SectionHeader badge={data.badge} title="Planifica tu semana" subtitle={data.subtitle} />
     {data.note && <AlertNote message={data.note} variant="warning" />}

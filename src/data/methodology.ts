@@ -1,32 +1,35 @@
 // src/data/methodology.ts
 export const methodologyData = {
   quote: {
-    text: "La Educación Física es una práctica pedagógica centrada en la conducta motriz, entendiendo el movimiento como una forma de comunicación, aprendizaje y relación con el entorno.",
-    author: "Pierre Parlebas",
-    role: "Sociólogo e investigador de la Educación Física"
+    text: "La formación deportiva en patinaje no solo moldea la velocidad en las piernas; estructura la disciplina en la mente y el carácter para la vida.",
+    author: "Metodología FORMAX-J",
+    role: "Enseñanza y Formación Deportiva"
   },
   omsBenefits: [
-    { icon: "fa-brain", title: "Desarrollo Cognitivo", desc: "Mejora la concentración, memoria y capacidad de resolución de problemas." },
-    { icon: "fa-heart", title: "Salud Mental", desc: "Reduce el estrés, ansiedad y fortalece la autoestima y resiliencia." },
-    { icon: "fa-bone", title: "Huesos y Músculos", desc: "Fortalece el sistema osteomuscular y previene lesiones futuras." },
-    { icon: "fa-shield-virus", title: "Prevención", desc: "Disminuye riesgo de enfermedades cardiovasculares y metabólicas." },
-    { icon: "fa-seedling", title: "Hábitos de Vida", desc: "Inculca disciplina, constancia y amor por la actividad física." }
-  ],
-  structure: {
-    sessionsYear: 140,
-    sessionsWeek: 3,
-    weeksYear: "46-47",
-    mesocycles: [
-      { num: 1, name: "Adaptación y fundamentación", focus: "Evaluación inicial, adaptación a cargas, fundamentos técnicos y hábitos de entrenamiento." },
-      { num: 2, name: "Desarrollo", focus: "Progresión de capacidades físicas, perfeccionamiento técnico y táctico." },
-      { num: 3, name: "Consolidación", focus: "Integración de habilidades en situaciones reales de carrera y mayor exigencia." },
-      { num: 4, name: "Aplicación y cierre", focus: "Evaluación final, consolidación del proceso y preparación para el descanso." }
-    ]
-  },
-  levels: [
-    { name: "Escuela Básica", locations: "El Hatillo / Barbosa", focus: "Iniciación y fundamentos motrices", color: "green" },
-    { name: "Semillero", locations: "El Hatillo / Barbosa", focus: "Desarrollo de habilidades específicas", color: "blue" },
-    { name: "Especialización", locations: "El Hatillo", focus: "Técnica avanzada y táctica de competición", color: "yellow" },
-    { name: "Avanzada", locations: "El Hatillo / Barbosa", focus: "Alto rendimiento y preparación élite", color: "purple" }
+    { 
+      icon: "fa-brain", 
+      title: "Reflejos y Enfoque", 
+      desc: "El patinaje de velocidad y descenso agudiza la toma de decisiones rápidas a más de 50 km/h, mejorando la concentración extrema." 
+    },
+    { 
+      icon: "fa-heart", 
+      title: "Confianza y Adrenalina", 
+      desc: "Superar la velocidad en pista y dominar pendientes rompe miedos, reduce el estrés diario y eleva la autoconfianza de los jóvenes." 
+    },
+    { 
+      icon: "fa-bone", 
+      title: "Potencia de Core", 
+      desc: "Desarrolla fuerza explosiva en piernas, glúteos y zona lumbar de forma equilibrada y sin impacto articular negativo." 
+    },
+    { 
+      icon: "fa-shield-virus", 
+      title: "Capacidad Cardiovascular", 
+      desc: "Optimiza la resistencia aeróbica y quema hasta 600 calorías por hora, protegiendo las articulaciones al evitar el impacto del running." 
+    },
+    { 
+      icon: "fa-seedling", 
+      title: "Disciplina de Campeones", 
+      desc: "Fomentamos la constancia, el trabajo en equipo y el amor por el deporte de alto rendimiento al aire libre en la región." 
+    }
   ]
 };

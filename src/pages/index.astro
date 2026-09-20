@@ -1,13 +1,13 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import Hero from '../components/sections/Hero.astro';
+import HeroCarousel from '../components/sections/HeroCarousel.astro';
 import About from '../components/sections/About.astro';
 import Programs from '../components/sections/Programs.astro';
 import Schedule from '../components/sections/Schedule.astro';
 import Sponsors from '../components/sections/Sponsors.astro';
 import Gallery from '../components/sections/Gallery.astro';
 import Testimonials from '../components/sections/Testimonials.astro';
-import Stats from '../components/sections/Stats.astro';
 import Contact from '../components/sections/Contact.astro';
 import { scheduleData } from '../data/schedule';
 import { heroData } from '../data/hero';
@@ -16,7 +16,6 @@ import { programsData } from '../data/programs';
 import { mainSponsor, sponsorProducts, secondarySponsors } from '../data/sponsors';
 import { galleryData } from '../data/gallery';
 import { testimonialsData } from '../data/testimonials';
-import { statsData } from '../data/stats';
 import { contactData } from '../data/contact';
 import { methodologyData } from '../data/methodology';
 import Methodology from '../components/sections/Methodology.astro';
@@ -24,6 +23,7 @@ import Methodology from '../components/sections/Methodology.astro';
 
 <MainLayout>
   <Hero data={heroData} />
+  <HeroCarousel data={galleryData} />
   <About data={aboutData} />
   <Methodology data={methodologyData} />
   <Programs data={programsData} />
@@ -36,6 +36,5 @@ import Methodology from '../components/sections/Methodology.astro';
 />
   <Gallery data={galleryData} />
   <Testimonials data={testimonialsData} />
-  <Stats data={statsData} />
   <Contact data={contactData} />
 </MainLayout>

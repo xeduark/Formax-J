@@ -4,23 +4,24 @@ import '../styles/global.css';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 
-// ✅ Sin interface - Astro infiere props automáticamente
-const { children } = Astro.props;
+const {
+  title = 'Club de Patinaje FORMAX-J | Velocidad sobre Ruedas',
+  description = 'Patinaje de velocidad en línea. Formación de campeones con disciplina, técnica y pasión.',
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
+  <script is:inline>document.documentElement.classList.add('js');</script>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Club de Patinaje FORMAX-J | Velocidad sobre Ruedas</title>
-    <meta name="description" content="Patinaje de velocidad en línea. Formación de campeones con disciplina, técnica y pasión." />
+    <title>{title}</title>
+    <meta name="description" content={description} />
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
@@ -30,15 +31,16 @@ const { children } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-500">
+    <a href="#main" class="skip-link">Saltar al contenido</a>
     <Header />
     
     <!-- ✅ CORRECCIÓN: <slot /> en lugar de {children} -->
-    <main class="min-h-screen"><slot /></main>
+    <main id="main" tabindex="-1" class="min-h-screen"><slot /></main>
     
     <Footer />
 
     <!-- WhatsApp Button -->
-    <a href="https://wa.me/3122461761" target="_blank" class="fixed bottom-6 right-6 z-50 group opacity-0 translate-y-5 transition-all duration-300" id="whatsappBtn">
+    <a href="https://wa.me/573122461761" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp" class="fixed bottom-6 right-6 z-50 group opacity-0 translate-y-5 transition-all duration-300" id="whatsappBtn">
       <div class="relative">
         <div class="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20"></div>
         <div class="relative w-16 h-16 bg-green-500 rounded-full flex items-center justify-center shadow-2xl hover:bg-green-600 transition-all hover:scale-110">
@@ -52,7 +54,7 @@ const { children } = Astro.props;
     </a>
 
     <!-- Back to Top Button -->
-    <button id="backToTop" class="fixed bottom-6 left-6 z-50 w-12 h-12 bg-gray-800 dark:bg-gray-700 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-all opacity-0 translate-y-4 pointer-events-none">
+    <button id="backToTop" type="button" aria-label="Volver arriba" class="fixed bottom-6 left-6 z-50 w-12 h-12 bg-gray-800 dark:bg-gray-700 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-all opacity-0 translate-y-4 pointer-events-none">
       <i class="fas fa-chevron-up"></i>
     </button>
 
@@ -64,17 +66,17 @@ const { children } = Astro.props;
           (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         html.classList.add('dark');
       }
-      document.getElementById('themeToggle')?.addEventListener('click', () => {
+      const themeToggle = document.getElementById('themeToggle');
+      const updateThemeState = () => {
+        const dark = html.classList.contains('dark');
+        themeToggle?.setAttribute('aria-pressed', String(dark));
+        themeToggle?.setAttribute('aria-label', dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+      };
+      updateThemeState();
+      themeToggle?.addEventListener('click', () => {
         html.classList.toggle('dark');
         localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-      });
-
-      // ===== NAVBAR SCROLL EFFECT =====
-      window.addEventListener('scroll', () => {
-        const nav = document.getElementById('navbar');
-        if (nav) {
-          nav.classList.toggle('bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-lg', window.scrollY > 100);
-        }
+        updateThemeState();
       });
 
       // ===== MOBILE MENU =====
@@ -86,11 +88,15 @@ const { children } = Astro.props;
       function openMenu() {
         menu?.classList.add('open');
         overlay?.classList.remove('hidden');
+        menu?.setAttribute('aria-hidden', 'false');
+        menuBtn?.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
       }
       function closeMenu() {
         menu?.classList.remove('open');
         overlay?.classList.add('hidden');
+        menu?.setAttribute('aria-hidden', 'true');
+        menuBtn?.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
       }
       
@@ -98,6 +104,9 @@ const { children } = Astro.props;
       closeBtn?.addEventListener('click', closeMenu);
       overlay?.addEventListener('click', closeMenu);
       document.querySelectorAll('.mobile-link')?.forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeMenu();
+      });
 
       // ===== SECTION REVEAL ON SCROLL =====
       const revealObserver = new IntersectionObserver((entries) => {
@@ -112,65 +121,52 @@ const { children } = Astro.props;
       // ===== BACK TO TOP & WHATSAPP BUTTONS =====
       const backToTopBtn = document.getElementById('backToTop');
       const whatsappBtn = document.getElementById('whatsappBtn');
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
       
+      let scrollTicking = false;
+      const updateScrollState = () => {
+        const scrollY = window.scrollY;
+        backToTopBtn?.classList.toggle('opacity-0', scrollY <= 500);
+        backToTopBtn?.classList.toggle('translate-y-4', scrollY <= 500);
+        backToTopBtn?.classList.toggle('pointer-events-none', scrollY <= 500);
+        backToTopBtn?.classList.toggle('opacity-100', scrollY > 500);
+        backToTopBtn?.classList.toggle('translate-y-0', scrollY > 500);
+        backToTopBtn?.classList.toggle('pointer-events-auto', scrollY > 500);
+        whatsappBtn?.classList.toggle('opacity-0', scrollY <= 300);
+        whatsappBtn?.classList.toggle('translate-y-5', scrollY <= 300);
+        whatsappBtn?.classList.toggle('opacity-100', scrollY > 300);
+        whatsappBtn?.classList.toggle('translate-y-0', scrollY > 300);
+
+        let current = '';
+        sections.forEach(section => {
+          if (scrollY >= section.offsetTop - 100) current = section.id;
+        });
+        navLinks.forEach(link => link.classList.toggle('active', link.hash === '#' + current));
+        scrollTicking = false;
+      };
       window.addEventListener('scroll', () => {
-        // Back to Top
-        if (backToTopBtn) {
-          if (window.scrollY > 500) {
-            backToTopBtn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-            backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
-          } else {
-            backToTopBtn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-            backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
-          }
+        if (!scrollTicking) {
+          scrollTicking = true;
+          requestAnimationFrame(updateScrollState);
         }
-        // WhatsApp Button
-        if (whatsappBtn) {
-          if (window.scrollY > 300) {
-            whatsappBtn.classList.remove('opacity-0', 'translate-y-5');
-            whatsappBtn.classList.add('opacity-100', 'translate-y-0');
-          } else {
-            whatsappBtn.classList.add('opacity-0', 'translate-y-5');
-            whatsappBtn.classList.remove('opacity-100', 'translate-y-0');
-          }
-        }
-      });
+      }, { passive: true });
+      updateScrollState();
       
       backToTopBtn?.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      // ===== ACTIVE NAV LINK ON SCROLL =====
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('.nav-link');
-      
-      window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-          if (window.scrollY >= section.offsetTop - 100) {
-            current = section.getAttribute('id') || '';
-          }
-        });
-        
-        navLinks.forEach(link => {
-          link.classList.remove('active', 'text-green-600', 'dark:text-green-400');
-          if (link.getAttribute('href') === '#' + current) {
-            link.classList.add('active', 'text-green-600', 'dark:text-green-400');
-          }
-        });
-      });
-
       // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      document.querySelectorAll('a[href*="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
+          const url = new URL(this.href, location.href);
+          // otra página, o "#" a secas, o una sección que no existe aquí: navegación normal
+          if (url.pathname !== location.pathname || url.hash.length < 2) return;
+          const target = document.querySelector(url.hash);
+          if (!target) return;
           e.preventDefault();
-          const href = this.getAttribute('href');
-          if (href) {
-            const target = document.querySelector(href);
-            if (target) {
-              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
 

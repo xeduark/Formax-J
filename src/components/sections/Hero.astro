@@ -143,6 +143,8 @@ const { data } = Astro.props;
             <ImageCloudinary
               src={data.image}
               alt="Patinador de velocidad"
+              loading="eager"
+              fetchpriority="high"
               class="w-full h-auto object-contain transition-transform duration-500 hover:scale-[1.02]"
             />
             <div

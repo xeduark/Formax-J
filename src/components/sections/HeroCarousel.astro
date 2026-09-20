@@ -1,0 +1,68 @@
+---
+// src/components/sections/HeroCarousel.astro
+// Carrusel nativo con CSS scroll-snap: sin librerías, sin JS de animación.
+import type { GalleryItem } from '../../types';
+
+export interface Props { data: GalleryItem[]; }
+const { data } = Astro.props;
+const slides = data.filter((item) => item.url);
+---
+
+{slides.length > 0 && (
+<section class="relative bg-gray-950 py-10 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div id="heroCarousel" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 no-scrollbar">
+      {slides.map((slide) => (
+        <figure class="snap-center shrink-0 w-[85%] sm:w-[60%] lg:w-[45%] relative rounded-3xl overflow-hidden group">
+          <img
+            src={slide.url}
+            alt={slide.title}
+            loading="lazy"
+            decoding="async"
+            class="w-full h-56 sm:h-72 lg:h-80 object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+            <h3 class="text-white font-display text-lg font-bold">{slide.title}</h3>
+            <p class="text-white/70 text-sm">{slide.desc}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <button
+      type="button"
+      data-carousel-dir="-1"
+      aria-label="Anterior"
+      class="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white shadow-lg hover:bg-white transition-colors flex items-center justify-center"
+    >
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button
+      type="button"
+      data-carousel-dir="1"
+      aria-label="Siguiente"
+      class="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white shadow-lg hover:bg-white transition-colors flex items-center justify-center"
+    >
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</section>
+)}
+
+<style is:global>
+  #heroCarousel { scrollbar-width: none; }
+  #heroCarousel::-webkit-scrollbar { display: none; }
+</style>
+
+<script is:inline>
+  (() => {
+    const track = document.getElementById('heroCarousel');
+    if (!track) return;
+    document.querySelectorAll('[data-carousel-dir]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const step = track.firstElementChild?.getBoundingClientRect().width || track.clientWidth;
+        track.scrollBy({ left: Number(btn.dataset.carouselDir) * (step + 16), behavior: 'smooth' });
+      });
+    });
+  })();
+</script>

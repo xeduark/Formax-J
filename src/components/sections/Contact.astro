@@ -89,29 +89,29 @@ const { data } = Astro.props;
           <form id="contactForm" class="space-y-6">
             <div class="grid sm:grid-cols-2 gap-6">
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nombre *</label>
-                <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tu nombre">
+                <label for="cfName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nombre *</label>
+                <input type="text" id="cfName" name="name" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tu nombre">
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Apellidos *</label>
-                <input type="text" name="lastname" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tus apellidos">
+                <label for="cfLastname" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Apellidos *</label>
+                <input type="text" id="cfLastname" name="lastname" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="Tus apellidos">
               </div>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-6">
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
-                <input type="email" name="email" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="tu@email.com">
+                <label for="cfEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
+                <input type="email" id="cfEmail" name="email" required class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="tu@email.com">
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Teléfono</label>
-                <input type="tel" name="phone" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="+57 300 000 0000">
+                <label for="cfPhone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Teléfono</label>
+                <input type="tel" id="cfPhone" name="phone" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" placeholder="+57 300 000 0000">
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Programa de Interés</label>
-              <select name="program" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none">
+              <label for="cfProgram" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Programa de Interés</label>
+              <select id="cfProgram" name="program" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none">
                 <option value="">Selecciona un programa</option>
                 {data.programs.map((p: string) => <option value={p}>{p}</option>)}
               </select>
@@ -119,7 +119,7 @@ const { data } = Astro.props;
 
             {/* ✅ ID agregado al textarea para pre-llenado desde Programs.astro */}
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mensaje</label>
+              <label for="contactMessage" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mensaje</label>
               <textarea 
                 id="contactMessage"
                 name="message"
@@ -134,10 +134,10 @@ const { data } = Astro.props;
             </button>
           </form>
 
-          <div id="formSuccess" class="hidden mt-6 p-4 bg-green-100 dark:bg-green-900/30 rounded-xl text-green-700 dark:text-green-300 text-center">
+          <div id="formSuccess" role="status" aria-live="polite" class="hidden mt-6 p-4 bg-green-100 dark:bg-green-900/30 rounded-xl text-green-700 dark:text-green-300 text-center">
             <i class="fas fa-check-circle text-2xl mb-2"></i>
-            <p class="font-semibold">¡Mensaje enviado correctamente!</p>
-            <p class="text-sm">Te contactaremos lo antes posible.</p>
+            <p class="font-semibold">Abrimos WhatsApp con tu mensaje listo</p>
+            <p class="text-sm">Pulsa enviar en WhatsApp y te respondemos lo antes posible.</p>
           </div>
         </div>
       </div>
@@ -152,22 +152,33 @@ const { data } = Astro.props;
     const success = document.getElementById('formSuccess');
     if (!form) return;
 
+    // Antes esto era un setTimeout que mostraba "enviado" sin mandar nada:
+    // cada mensaje del formulario se perdía. Ahora abre WhatsApp con el
+    // contenido ya redactado, igual que el resto del sitio.
+    const WHATSAPP = '573122461761';
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const btn = form.querySelector('button[type="submit"]');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
-      btn.disabled = true;
+      const get = (n) => (form.elements[n]?.value || '').trim();
 
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        form.reset();
-        if (success) {
-          success.classList.remove('hidden');
-          setTimeout(() => success.classList.add('hidden'), 5000);
-        }
-      }, 1500);
+      const rows = ['*NUEVO CONTACTO - WEB FORMAX-J*', ''];
+      rows.push('Nombre: ' + get('name') + ' ' + get('lastname'));
+      rows.push('Email: ' + get('email'));
+      if (get('phone')) rows.push('Telefono: ' + get('phone'));
+      if (get('program')) rows.push('Programa de interes: ' + get('program'));
+      if (get('message')) rows.push('', 'Mensaje:', get('message'));
+
+      window.open(
+        'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(rows.join(String.fromCharCode(10))),
+        '_blank',
+        'noopener'
+      );
+
+      form.reset();
+      if (success) {
+        success.classList.remove('hidden');
+        setTimeout(() => success.classList.add('hidden'), 6000);
+      }
     });
   });
 </script>

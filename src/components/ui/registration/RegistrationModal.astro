@@ -12,12 +12,12 @@ const { data = registrationData } = Astro.props;
 
 <dialog
   id="registration-modal"
-  class="fixed inset-0 z-[100] m-auto p-0 bg-transparent backdrop:bg-black/60 backdrop-blur-sm max-w-lg w-[calc(100%-2rem)] rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700 open:animate-fadeIn"
+  class="fixed inset-0 z-[100] m-auto p-0 bg-transparent backdrop:bg-black/60 backdrop-blur-sm max-w-lg w-[calc(100%-2rem)] max-h-[90dvh] rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700 open:animate-fadeIn"
 >
-  <div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col font-display">
+  <div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col max-h-[90dvh] font-display">
     
     {/* Header con Gradiente FORMAX-J */}
-    <div class="bg-gradient-to-r from-green-600 to-yellow-500 p-6 text-white relative">
+    <div class="bg-gradient-to-r from-green-600 to-yellow-500 p-6 text-white relative shrink-0">
       <button
         type="button"
         id="modal-close-btn"
@@ -38,8 +38,8 @@ const { data = registrationData } = Astro.props;
       </p>
     </div>
 
-    {/* Formulario */}
-    <div class="p-6">
+    {/* Formulario: desborda en pantallas bajas, por eso scrollea */}
+    <div class="p-6 overflow-y-auto overscroll-contain">
       <form id="enrollment-form" class="space-y-4">
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -153,24 +153,6 @@ const { data = registrationData } = Astro.props;
           </span>
         </div>
 
-        {/* Botones */}
-        <div class="pt-2 flex flex-col sm:flex-row items-center justify-end gap-3">
-          <button
-            type="button"
-            id="modal-cancel-btn"
-            class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer transition"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold px-6 py-2.5 rounded-xl transition shadow-lg hover:shadow-green-500/30 active:scale-[0.98] cursor-pointer font-display"
-          >
-            <i class="fab fa-whatsapp text-lg"></i>
-            <span>Enviar a WhatsApp Oficial</span>
-          </button>
-        </div>
-
       </form>
 
       {/* Mensaje de Éxito */}
@@ -192,6 +174,32 @@ const { data = registrationData } = Astro.props;
       </div>
 
     </div>
+
+    {/*
+      Pie fuera del area que scrollea: con los botones dentro, el contenido
+      pasaba por detras de la barra translucida y se veia sucio. Aqui son una
+      franja solida fija. El submit se asocia al formulario por su id.
+    */}
+    <div
+      id="modal-footer"
+      class="shrink-0 px-6 py-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row items-center justify-end gap-3"
+    >
+      <button
+        type="button"
+        id="modal-cancel-btn"
+        class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer transition"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        form="enrollment-form"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold px-6 py-2.5 rounded-xl transition shadow-lg hover:shadow-green-500/30 active:scale-[0.98] cursor-pointer font-display"
+      >
+        <i class="fab fa-whatsapp text-lg"></i>
+        <span>Enviar a WhatsApp Oficial</span>
+      </button>
+    </div>
   </div>
 </dialog>
 
@@ -211,11 +219,13 @@ const { data = registrationData } = Astro.props;
     const doneBtn = document.getElementById('modal-done-btn');
     const form = document.getElementById('enrollment-form');
     const successBox = document.getElementById('modal-success');
+    const footer = document.getElementById('modal-footer');
 
     if (!dialog) return;
 
     const openModal = () => {
       if (form) form.classList.remove('hidden');
+      if (footer) footer.classList.remove('hidden');
       if (successBox) successBox.classList.add('hidden');
       dialog.showModal();
       document.body.style.overflow = 'hidden'; // Prevenir scroll de fondo
@@ -281,6 +291,7 @@ const { data = registrationData } = Astro.props;
       
       // Mostrar éxito
       if (form) form.classList.add('hidden');
+      if (footer) footer.classList.add('hidden');
       if (successBox) successBox.classList.remove('hidden');
     });
   }

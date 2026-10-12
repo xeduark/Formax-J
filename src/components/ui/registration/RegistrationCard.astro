@@ -247,6 +247,26 @@ const {
                     </li>
                   ))}
                 </ul>
+
+                {/* Descarga del formato que el acudiente debe firmar */}
+                <a
+                  href="/autorizacion/"
+                  class="mt-4 flex items-start gap-3 p-4 rounded-xl border-2 border-dashed border-green-400 dark:border-green-700 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors group"
+                >
+                  <span class="flex-shrink-0 w-10 h-10 rounded-xl bg-green-600 text-white flex items-center justify-center">
+                    <i class="fas fa-file-signature" aria-hidden="true" />
+                  </span>
+                  <span class="flex-1 min-w-0">
+                    <span class="block text-sm font-bold text-gray-900 dark:text-white">
+                      Autorización del acudiente
+                      <i class="fas fa-arrow-right ml-1 text-xs text-green-600 group-hover:translate-x-1 inline-block transition-transform" aria-hidden="true" />
+                    </span>
+                    <span class="block text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
+                      Descárgala, imprímela y tráela firmada. Incluye el permiso de uso de imagen,
+                      obligatorio si el deportista es menor de edad.
+                    </span>
+                  </span>
+                </a>
               </div>
             )
           }

@@ -124,6 +124,10 @@ const {
       const sections = document.querySelectorAll('section[id]');
       const navLinks = document.querySelectorAll('.nav-link');
       
+      // El botón flotante de WhatsApp se sienta encima de los enlaces legales
+      // del footer. Mientras el footer esté a la vista, se oculta.
+      let footerVisible = false;
+
       let scrollTicking = false;
       const updateScrollState = () => {
         const scrollY = window.scrollY;
@@ -133,10 +137,14 @@ const {
         backToTopBtn?.classList.toggle('opacity-100', scrollY > 500);
         backToTopBtn?.classList.toggle('translate-y-0', scrollY > 500);
         backToTopBtn?.classList.toggle('pointer-events-auto', scrollY > 500);
-        whatsappBtn?.classList.toggle('opacity-0', scrollY <= 300);
-        whatsappBtn?.classList.toggle('translate-y-5', scrollY <= 300);
-        whatsappBtn?.classList.toggle('opacity-100', scrollY > 300);
-        whatsappBtn?.classList.toggle('translate-y-0', scrollY > 300);
+        const verWhatsapp = scrollY > 300 && !footerVisible;
+        whatsappBtn?.classList.toggle('opacity-0', !verWhatsapp);
+        whatsappBtn?.classList.toggle('translate-y-5', !verWhatsapp);
+        // sin esto seguía siendo clicable estando invisible
+        whatsappBtn?.classList.toggle('pointer-events-none', !verWhatsapp);
+        whatsappBtn?.classList.toggle('opacity-100', verWhatsapp);
+        whatsappBtn?.classList.toggle('translate-y-0', verWhatsapp);
+        whatsappBtn?.classList.toggle('pointer-events-auto', verWhatsapp);
 
         let current = '';
         sections.forEach(section => {
@@ -151,6 +159,18 @@ const {
           requestAnimationFrame(updateScrollState);
         }
       }, { passive: true });
+
+      const footerEl = document.querySelector('footer');
+      if (footerEl) {
+        new IntersectionObserver(
+          (entries) => {
+            footerVisible = entries[0].isIntersecting;
+            updateScrollState();
+          },
+          { threshold: 0 }
+        ).observe(footerEl);
+      }
+
       updateScrollState();
       
       backToTopBtn?.addEventListener('click', () => {

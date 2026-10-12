@@ -68,6 +68,14 @@ const casillas = [
   <!-- Hoja imprimible -->
   <article class="hoja bg-white text-gray-900 max-w-3xl mx-auto px-6 sm:px-10 py-10 mb-16 shadow-lg print:shadow-none print:mb-0">
     <header class="text-center border-b-2 border-gray-900 pb-4 mb-6">
+      {/* El SVG imprime nítido a cualquier tamaño, a diferencia del PNG de Cloudinary */}
+      <img
+        src="/logo-formax-j.svg"
+        alt="Club Deportivo de Patinaje FORMAX-J"
+        width="220"
+        height="91"
+        class="mx-auto mb-4 h-16 w-auto"
+      />
       <h1 class="text-xl font-bold uppercase tracking-wide">
         Autorización para el Tratamiento de Datos Personales,<br />Datos de Salud e Imagen
       </h1>
@@ -232,6 +240,11 @@ const casillas = [
       padding: 0;
       box-shadow: none;
       font-size: 11pt;
+    }
+    .hoja img {
+      /* sin esto algunos navegadores omiten graficos al imprimir */
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
     }
     main { min-height: 0 !important; }
     @page { margin: 1.5cm; }

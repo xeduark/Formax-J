@@ -189,6 +189,7 @@ const wa = (config.whatsapp || '').replace(/\D/g, '');
       <input type="text" name="nombre" />
       <input type="text" name="telefono" />
       <input type="text" name="pagina" />
+      <input type="hidden" name="subject" />
     </form>
   </div>
 </section>
@@ -259,6 +260,9 @@ const wa = (config.whatsapp || '').replace(/\D/g, '');
         nombre: val('.pay-nombre'),
         telefono: val('.pay-telefono'),
         pagina: location.pathname,
+        // Asunto del correo que Netlify manda al contador: con la referencia
+        // delante puede buscarla en su bandeja sin abrir nada.
+        subject: `Pago ${referencia}${val('.pay-nombre') ? ' - ' + val('.pay-nombre') : ''}`,
       });
       fetch('/', {
         method: 'POST',

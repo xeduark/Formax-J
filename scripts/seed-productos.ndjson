@@ -1,0 +1,4 @@
+{"_id":"producto-patines-pro","_type":"productoPatrocinador","name":"Patines Pro Speed","description":"Botas de fibra de carbono","price":"€289","icon":"fa-shoe-prints","color":"orange","orden":10}
+{"_id":"producto-ruedas-110","_type":"productoPatrocinador","name":"Ruedas 110mm","description":"Ruedas de competición","price":"€45","icon":"fa-circle","color":"blue","orden":20}
+{"_id":"producto-casco-aero","_type":"productoPatrocinador","name":"Casco Aerodinámico","description":"Certificación CE","price":"€89","icon":"fa-helmet-battle","color":"green","orden":30}
+{"_id":"producto-traje-comp","_type":"productoPatrocinador","name":"Traje de Competición","description":"Aerodinámico y ligero","price":"€159","icon":"fa-tshirt","color":"purple","orden":40}

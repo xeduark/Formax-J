@@ -1,0 +1,13 @@
+---
+// src/pages/warning-legal.astro
+import MainLayout from '../layouts/MainLayout.astro';
+import LegalDoc from '../components/sections/LegalDoc.astro';
+import { termsDoc } from '../data/legal';
+---
+
+<MainLayout
+  title="Aviso Legal y Condiciones de Uso | Club de Patinaje FORMAX-J"
+  description="Condiciones de uso del sitio, inscripciones, pagos y devoluciones del Club de Patinaje FORMAX-J."
+>
+  <LegalDoc doc={termsDoc} />
+</MainLayout>

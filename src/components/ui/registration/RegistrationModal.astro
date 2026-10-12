@@ -196,7 +196,13 @@ const { data = registrationData } = Astro.props;
 </dialog>
 
 {/* Script nativo - Sin TypeScript annotations */}
-<script is:inline>
+<script
+  is:inline
+  define:vars={{
+    precio: data.price,
+    whatsapp: (data.whatsappContact || '573122461761').replace(/\D/g, ''),
+  }}
+>
   function setupRegistrationModal() {
     const dialog = document.getElementById('registration-modal');
     const openButtons = document.querySelectorAll('[data-open-enroll-modal]');
@@ -268,10 +274,10 @@ const { data = registrationData } = Astro.props;
 • Acudiente: ${acudiente}
 • Teléfono: ${tel}
 • EPS: ${eps}
-• Valor de Inscripción: ${data.price} (Pago único)`;
+• Valor de Inscripción: ${precio} (Pago único)`;
 
       // Abrir WhatsApp
-      window.open(`https://wa.me/${data.whatsappContact || '573001234567'}?text=${encodeURIComponent(whatsappText)}`, '_blank');
+      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappText)}`, '_blank', 'noopener');
       
       // Mostrar éxito
       if (form) form.classList.add('hidden');

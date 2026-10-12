@@ -1,0 +1,304 @@
+---
+// src/components/ui/PaymentPanel.astro
+//
+// Panel de pago reutilizable: inscripción, mensualidades y dotación usan este
+// mismo componente. Dos vías siempre disponibles:
+//   1. Pasarela (Wompi) si el concepto tiene link de pago configurado.
+//   2. Transferencia a Nequi o Bancolombia con referencia única y envío de
+//      comprobante por WhatsApp.
+import { paymentConfig, cop, isPaymentConfigured, type PaymentConfig } from '../../data/payments';
+
+export interface Props {
+  /** Qué se está pagando. Viaja en la referencia y en el mensaje de WhatsApp. */
+  concepto: string;
+  /** Valor en pesos. Si se omite, el panel pide acordar el valor por WhatsApp. */
+  monto?: number;
+  /** Link de pago de Wompi para este concepto (opcional). */
+  wompiLink?: string;
+  /** Config alternativa, normalmente la que llega de Sanity. */
+  config?: PaymentConfig;
+  /** Nota corta bajo el importe. */
+  nota?: string;
+}
+
+const { concepto, monto, wompiLink, config = paymentConfig, nota } = Astro.props;
+const listo = isPaymentConfigured(config);
+const wa = (config.whatsapp || '').replace(/\D/g, '');
+---
+
+<section
+  class="payment-panel rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-hidden"
+  data-concepto={concepto}
+  data-monto={monto ?? ''}
+  data-whatsapp={wa}
+  aria-labelledby="pay-title"
+>
+  <!-- Importe -->
+  <header class="p-6 sm:p-8 bg-gradient-to-r from-green-600 to-green-500 text-white">
+    <p class="text-xs font-bold uppercase tracking-wider text-white/80">Pago</p>
+    <h3 id="pay-title" class="font-display text-xl sm:text-2xl font-bold mt-1">{concepto}</h3>
+    {monto != null ? (
+      <p class="text-4xl sm:text-5xl font-bold mt-3">{cop(monto)}</p>
+    ) : (
+      <p class="text-lg font-semibold mt-3">Valor a confirmar con el club</p>
+    )}
+    {nota && <p class="text-sm text-white/80 mt-2">{nota}</p>}
+
+    <div class="mt-5 flex flex-wrap items-center gap-3">
+      <span class="text-xs uppercase tracking-wider text-white/70 font-bold">Tu referencia</span>
+      <code
+        class="pay-ref px-3 py-1.5 rounded-lg bg-black/25 font-mono text-sm font-bold tracking-wider"
+      >—</code>
+      <button
+        type="button"
+        class="pay-copy inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 text-sm font-semibold transition-colors"
+        data-copy-target=".pay-ref"
+      >
+        <i class="fas fa-copy" aria-hidden="true"></i>Copiar
+      </button>
+    </div>
+    <p class="text-xs text-white/70 mt-2">
+      Incluye esta referencia en la descripción de la transferencia. Nos sirve para identificar tu pago.
+    </p>
+  </header>
+
+  <div class="p-6 sm:p-8 space-y-4">
+    {!listo && (
+      <p class="rounded-xl bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4 text-sm text-yellow-800 dark:text-yellow-200">
+        <i class="fas fa-triangle-exclamation mr-2" aria-hidden="true"></i>
+        Faltan los datos de recaudo del club. Cárgalos en Sanity (Ajustes de pago) o en
+        <code class="font-mono">src/data/payments.ts</code> antes de publicar.
+      </p>
+    )}
+
+    <!-- Vía 1: pasarela -->
+    {wompiLink && (
+      <a
+        href={wompiLink}
+        target="_blank"
+        rel="noopener"
+        class="flex items-center gap-4 p-5 rounded-2xl border-2 border-green-500 bg-green-50 dark:bg-green-900/20 hover:shadow-lg transition-shadow group"
+      >
+        <span class="w-12 h-12 shrink-0 rounded-xl bg-green-600 text-white flex items-center justify-center text-xl">
+          <i class="fas fa-credit-card" aria-hidden="true"></i>
+        </span>
+        <span class="flex-1 min-w-0">
+          <span class="block font-bold text-gray-900 dark:text-white">Pagar en línea</span>
+          <span class="block text-sm text-gray-600 dark:text-gray-400">
+            Nequi, PSE, botón Bancolombia o tarjeta. Confirmación inmediata.
+          </span>
+        </span>
+        <i class="fas fa-arrow-right text-green-600 group-hover:translate-x-1 transition-transform" aria-hidden="true"></i>
+      </a>
+    )}
+
+    <!-- Vía 2: transferencia -->
+    <div class="grid sm:grid-cols-2 gap-4">
+      <article class="p-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <h4 class="flex items-center gap-2 font-bold text-gray-900 dark:text-white mb-3">
+          <span class="w-8 h-8 rounded-lg bg-[#da0081] text-white flex items-center justify-center text-sm font-bold" aria-hidden="true">N</span>
+          Nequi
+        </h4>
+        <dl class="text-sm space-y-2">
+          <div>
+            <dt class="text-gray-500 dark:text-gray-400 text-xs">Celular</dt>
+            <dd class="flex items-center gap-2">
+              <span class="pay-nequi font-mono font-bold text-gray-900 dark:text-white">{config.nequi}</span>
+              <button type="button" class="pay-copy text-green-600 hover:text-green-700 text-xs font-semibold" data-copy-target=".pay-nequi">
+                <i class="fas fa-copy" aria-hidden="true"></i><span class="sr-only">Copiar número de Nequi</span>
+              </button>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-gray-500 dark:text-gray-400 text-xs">Titular</dt>
+            <dd class="text-gray-700 dark:text-gray-300">{config.titular}</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="p-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <h4 class="flex items-center gap-2 font-bold text-gray-900 dark:text-white mb-3">
+          <span class="w-8 h-8 rounded-lg bg-[#fdda24] text-gray-900 flex items-center justify-center text-sm font-bold" aria-hidden="true">B</span>
+          Bancolombia
+        </h4>
+        <dl class="text-sm space-y-2">
+          <div>
+            <dt class="text-gray-500 dark:text-gray-400 text-xs">Cuenta de {config.bancolombiaTipo}</dt>
+            <dd class="flex items-center gap-2">
+              <span class="pay-banco font-mono font-bold text-gray-900 dark:text-white">{config.bancolombiaCuenta}</span>
+              <button type="button" class="pay-copy text-green-600 hover:text-green-700 text-xs font-semibold" data-copy-target=".pay-banco">
+                <i class="fas fa-copy" aria-hidden="true"></i><span class="sr-only">Copiar número de cuenta</span>
+              </button>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-gray-500 dark:text-gray-400 text-xs">Titular / NIT</dt>
+            <dd class="text-gray-700 dark:text-gray-300">{config.titular} · {config.nit}</dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+
+    <!-- Datos de quien paga: sin esto el registro contable no sirve -->
+    <div class="grid sm:grid-cols-2 gap-4">
+      <label class="block">
+        <span class="text-xs text-gray-500 dark:text-gray-400">Nombre del deportista</span>
+        <input
+          type="text"
+          class="pay-nombre mt-1 w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 outline-none"
+          placeholder="Nombre y apellido"
+        />
+      </label>
+      <label class="block">
+        <span class="text-xs text-gray-500 dark:text-gray-400">Teléfono de contacto</span>
+        <input
+          type="tel"
+          class="pay-telefono mt-1 w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 outline-none"
+          placeholder="300 000 0000"
+        />
+      </label>
+    </div>
+
+    <!-- Comprobante -->
+    <button
+      type="button"
+      class="pay-receipt w-full py-4 px-6 rounded-full bg-green-500 text-white font-semibold text-lg hover:bg-green-600 transition-colors inline-flex items-center justify-center gap-2"
+    >
+      <i class="fab fa-whatsapp text-xl" aria-hidden="true"></i>
+      Ya transferí, enviar comprobante
+    </button>
+
+    <p class="pay-status text-sm text-center text-green-600 dark:text-green-400 hidden" role="status" aria-live="polite"></p>
+
+    <p class="text-xs text-gray-500 dark:text-gray-400 text-center">
+      Tu pago queda confirmado cuando el club valida el comprobante. Guarda el soporte de la transferencia.
+    </p>
+
+    <!--
+      Netlify Forms detecta este formulario al construir el sitio y crea el
+      buzón "pagos". El envío real se hace por fetch desde el script, para no
+      interrumpir la apertura de WhatsApp. El contador exporta el CSV desde
+      Netlify y lo abre en Excel.
+    -->
+    <form name="pagos" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="fecha" />
+      <input type="text" name="referencia" />
+      <input type="text" name="concepto" />
+      <input type="text" name="monto" />
+      <input type="text" name="nombre" />
+      <input type="text" name="telefono" />
+      <input type="text" name="pagina" />
+    </form>
+  </div>
+</section>
+
+<script>
+  // Una sola inicialización para todos los paneles de la página.
+  document.querySelectorAll('.payment-panel').forEach((panel) => {
+    const el = panel as HTMLElement;
+    const concepto = el.dataset.concepto || 'Pago';
+    const monto = el.dataset.monto ? Number(el.dataset.monto) : null;
+    const whatsapp = el.dataset.whatsapp || '';
+    const status = el.querySelector('.pay-status') as HTMLElement | null;
+
+    // Referencia única y legible: el club la busca en el extracto.
+    const slug = concepto
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-zA-Z]/g, '')
+      .slice(0, 4)
+      .toUpperCase();
+    const unique = (Date.now().toString(36) + Math.random().toString(36).slice(2, 5))
+      .slice(-6)
+      .toUpperCase();
+    const referencia = `FJ-${slug || 'PAGO'}-${unique}`;
+
+    const refEl = el.querySelector('.pay-ref');
+    if (refEl) refEl.textContent = referencia;
+
+    const say = (msg: string) => {
+      if (!status) return;
+      status.textContent = msg;
+      status.classList.remove('hidden');
+      setTimeout(() => status.classList.add('hidden'), 4000);
+    };
+
+    el.querySelectorAll('.pay-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const sel = (btn as HTMLElement).dataset.copyTarget;
+        const text = sel ? el.querySelector(sel)?.textContent?.trim() : '';
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          say('Copiado: ' + text);
+        } catch {
+          // Sin permiso de portapapeles (http, Safari antiguo): no dejamos al
+          // usuario sin salida, le mostramos el dato para copiarlo a mano.
+          say('Cópialo manualmente: ' + text);
+        }
+      });
+    });
+
+    const val = (sel: string) =>
+      (el.querySelector(sel) as HTMLInputElement | null)?.value.trim() || '';
+
+    /**
+     * Deja constancia del pago en Netlify Forms (buzón "pagos"), que el
+     * contador exporta a CSV. Es independiente de WhatsApp: si falla, el aviso
+     * por WhatsApp sale igual. En local siempre falla porque Netlify Forms solo
+     * existe en el sitio desplegado.
+     */
+    const registrar = (referencia: string) => {
+      const datos = new URLSearchParams({
+        'form-name': 'pagos',
+        fecha: new Date().toISOString(),
+        referencia,
+        concepto,
+        monto: monto ? String(monto) : '',
+        nombre: val('.pay-nombre'),
+        telefono: val('.pay-telefono'),
+        pagina: location.pathname,
+      });
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: datos.toString(),
+      }).catch(() => {
+        /* el registro es secundario: nunca debe bloquear al usuario */
+      });
+    };
+
+    el.querySelector('.pay-receipt')?.addEventListener('click', () => {
+      if (!whatsapp) return;
+      const rows = [
+        '*COMPROBANTE DE PAGO - FORMAX-J*',
+        '',
+        'Concepto: ' + concepto,
+        'Referencia: ' + referencia,
+      ];
+      if (val('.pay-nombre')) rows.push('Deportista: ' + val('.pay-nombre'));
+      if (val('.pay-telefono')) rows.push('Telefono: ' + val('.pay-telefono'));
+      if (monto) {
+        rows.push(
+          'Valor: ' +
+            new Intl.NumberFormat('es-CO', {
+              style: 'currency',
+              currency: 'COP',
+              maximumFractionDigits: 0,
+            }).format(monto)
+        );
+      }
+      rows.push('', 'Adjunto el soporte de la transferencia.');
+      // window.open debe ir dentro del gesto del clic o el navegador lo bloquea.
+      window.open(
+        'https://wa.me/' + whatsapp + '?text=' + encodeURIComponent(rows.join(String.fromCharCode(10))),
+        '_blank',
+        'noopener'
+      );
+
+      registrar(referencia);
+      say('Registrado con la referencia ' + referencia);
+    });
+  });
+</script>

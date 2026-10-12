@@ -26,3 +26,4 @@ pnpm-debug.log*
 /graphify
 /graphify-out
 
+scripts/seed.ndjson

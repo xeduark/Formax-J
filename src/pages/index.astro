@@ -19,22 +19,48 @@ import { testimonialsData } from '../data/testimonials';
 import { contactData } from '../data/contact';
 import { methodologyData } from '../data/methodology';
 import Methodology from '../components/sections/Methodology.astro';
+
+// Contenido editable desde Sanity. Si el CMS no está configurado o falla,
+// fromSanity devuelve los datos locales y el sitio no se entera.
+import {
+  fromSanity,
+  QUERY_PROGRAMAS,
+  QUERY_HORARIOS,
+  QUERY_GALERIA,
+  QUERY_TESTIMONIOS,
+  QUERY_HERO,
+  QUERY_NOSOTROS,
+  QUERY_METODOLOGIA,
+  QUERY_CONTACTO,
+  QUERY_PRODUCTOS,
+} from '../lib/sanity';
+
+const programs = await fromSanity(QUERY_PROGRAMAS, programsData);
+const gallery = await fromSanity(QUERY_GALERIA, galleryData);
+const testimonials = await fromSanity(QUERY_TESTIMONIOS, testimonialsData);
+const days = await fromSanity(QUERY_HORARIOS, scheduleData.days);
+const schedule = { ...scheduleData, days };
+const hero = await fromSanity(QUERY_HERO, heroData);
+const about = await fromSanity(QUERY_NOSOTROS, aboutData);
+const methodology = await fromSanity(QUERY_METODOLOGIA, methodologyData);
+const contact = await fromSanity(QUERY_CONTACTO, contactData);
+const productos = await fromSanity(QUERY_PRODUCTOS, sponsorProducts);
 ---
 
 <MainLayout>
-  <Hero data={heroData} />
-  <HeroCarousel data={galleryData} />
-  <About data={aboutData} />
-  <Methodology data={methodologyData} />
-  <Programs data={programsData} />
-  <Schedule data={scheduleData} />
+  <Hero data={hero} />
+  <HeroCarousel data={gallery} />
+  <About data={about} />
+  <Methodology data={methodology} />
+  <Programs data={programs} />
+  <Schedule data={schedule} />
   <Sponsors 
   mainSponsor={mainSponsor} 
-  products={sponsorProducts} 
+  products={productos} 
   secondary={secondarySponsors} 
   badge="Nuestros Patrocinadores"
 />
-  <Gallery data={galleryData} />
-  <Testimonials data={testimonialsData} />
-  <Contact data={contactData} />
+  <Gallery data={gallery} />
+  <Testimonials data={testimonials} />
+  <Contact data={contact} />
 </MainLayout>

@@ -9,6 +9,12 @@ import RegistrationSection from '@components/ui/registration/RegistrationCard.as
 import RegistrationModal from '@components/ui/registration/RegistrationModal.astro';
 
 import { registrationData } from '../data/registration';
+import PaymentPanel from '@components/ui/PaymentPanel.astro';
+import { fromSanity, QUERY_PAGOS, QUERY_INSCRIPCION } from '../lib/sanity';
+import { paymentConfig } from '../data/payments';
+
+const pagos = await fromSanity(QUERY_PAGOS, paymentConfig);
+const inscripcion = await fromSanity(QUERY_INSCRIPCION, registrationData);
 
 // Meta tags para SEO
 const title = 'Inscripción | Club Deportivo FORMAX-J';
@@ -17,9 +23,28 @@ const description = 'Únete al Club FORMAX-J. Proceso de afiliación, requisitos
 
 <MainLayout title={title} description={description}>
   {/* Sección principal de inscripción */}
-  <RegistrationSection data={registrationData}
+  <RegistrationSection data={inscripcion}
   />
   
+  {/* Pago de inscripción */}
+  <section id="pago" class="py-20 bg-white dark:bg-gray-900">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium mb-4">
+          <i class="fas fa-wallet mr-1"></i> Medios de pago
+        </span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+          Paga tu <span class="gradient-text">inscripción</span>
+        </h2>
+      </div>
+      <PaymentPanel
+        concepto="Inscripción y primera mensualidad"
+        config={pagos}
+        nota="El valor depende del programa. Confírmalo con el club antes de transferir."
+      />
+    </div>
+  </section>
+
   {/* Acceso a la dotación oficial */}
   <section class="py-20 bg-gray-50 dark:bg-gray-950">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,5 +81,5 @@ const description = 'Únete al Club FORMAX-J. Proceso de afiliación, requisitos
   </section>
 
   {/* Modal de pre-inscripción (oculto por defecto) */}
-  <RegistrationModal data={registrationData} />
+  <RegistrationModal data={inscripcion} />
 </MainLayout>

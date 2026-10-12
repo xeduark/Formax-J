@@ -1,0 +1,243 @@
+---
+// src/pages/autorizacion.astro
+//
+// Formato de autorización para el acudiente, pensado para imprimirse y anexarse
+// al contrato físico del club. Ctrl+P desde el navegador da un A4 limpio.
+//
+// ⚠️ PLANTILLA pendiente de revisión por abogado y de completar los datos
+// marcados como PENDIENTE en src/data/legal.ts.
+import MainLayout from '../layouts/MainLayout.astro';
+import { responsable } from '../data/legal';
+
+const casillas = [
+  {
+    id: 'interno',
+    titulo: 'Registro interno (no se publica)',
+    detalle:
+      'Fotografías y videos para seguimiento técnico del entrenador, análisis de gesto deportivo y archivo del club.',
+  },
+  {
+    id: 'redes',
+    titulo: 'Redes sociales y sitio web del club',
+    detalle:
+      'Publicación en Instagram, Facebook, YouTube, TikTok y en formax-j.com, en contenidos sobre la actividad del club.',
+  },
+  {
+    id: 'promocional',
+    titulo: 'Material promocional y de patrocinadores',
+    detalle:
+      'Afiches, volantes, pendones y piezas en las que aparezcan marcas patrocinadoras del club.',
+  },
+  {
+    id: 'prensa',
+    titulo: 'Prensa y medios de comunicación',
+    detalle: 'Entrega de material a medios que cubran competencias o actividades del club.',
+  },
+];
+---
+
+<MainLayout
+  title="Autorización de Tratamiento de Datos e Imagen | FORMAX-J"
+  description="Formato de autorización del acudiente para el tratamiento de datos personales, datos de salud e imagen de deportistas menores de edad."
+>
+  <section class="pt-28 pb-10 bg-gray-50 dark:bg-gray-950 no-print">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Ruta" class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        <a href="/" class="hover:text-green-600">Inicio</a>
+        <span class="mx-2" aria-hidden="true">/</span>
+        <span>Autorización del acudiente</span>
+      </nav>
+      <div class="rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-5 mb-6">
+        <p class="text-sm text-yellow-900 dark:text-yellow-100 leading-relaxed">
+          <strong><i class="fas fa-triangle-exclamation mr-2" aria-hidden="true"></i>Documento modelo.</strong>
+          Antes de usarlo, complétalo con la razón social y el NIT del club y hazlo revisar por un
+          abogado. Las casillas deben poder marcarse por separado y negarse sin que eso impida la
+          inscripción.
+        </p>
+      </div>
+      <button
+        type="button"
+        id="btnImprimir"
+        class="inline-flex items-center px-6 py-3 rounded-full bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors"
+      >
+        <i class="fas fa-print mr-2" aria-hidden="true"></i>Imprimir / Guardar como PDF
+      </button>
+    </div>
+  </section>
+
+  <!-- Hoja imprimible -->
+  <article class="hoja bg-white text-gray-900 max-w-3xl mx-auto px-6 sm:px-10 py-10 mb-16 shadow-lg print:shadow-none print:mb-0">
+    <header class="text-center border-b-2 border-gray-900 pb-4 mb-6">
+      <h1 class="text-xl font-bold uppercase tracking-wide">
+        Autorización para el Tratamiento de Datos Personales,<br />Datos de Salud e Imagen
+      </h1>
+      <p class="text-sm mt-2">{responsable.nombre}</p>
+      <p class="text-xs text-gray-600">
+        {responsable.razonSocial} · NIT {responsable.nit}<br />
+        {responsable.direccion} · {responsable.email} · {responsable.telefono}
+      </p>
+    </header>
+
+    <!-- 1. Identificación -->
+    <h2 class="font-bold text-sm uppercase tracking-wide mb-3">1. Identificación</h2>
+    <table class="w-full text-sm border-collapse mb-6">
+      <tbody>
+        <tr>
+          <td class="border border-gray-400 p-2 w-1/3 bg-gray-50">Nombre del deportista</td>
+          <td class="border border-gray-400 p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 p-2 bg-gray-50">Documento de identidad</td>
+          <td class="border border-gray-400 p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 p-2 bg-gray-50">Fecha de nacimiento</td>
+          <td class="border border-gray-400 p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 p-2 bg-gray-50">Nombre del acudiente</td>
+          <td class="border border-gray-400 p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 p-2 bg-gray-50">Documento del acudiente</td>
+          <td class="border border-gray-400 p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 p-2 bg-gray-50">Parentesco</td>
+          <td class="border border-gray-400 p-2"></td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 p-2 bg-gray-50">Teléfono y correo</td>
+          <td class="border border-gray-400 p-2"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 2. Datos personales -->
+    <h2 class="font-bold text-sm uppercase tracking-wide mb-2">2. Datos personales (obligatorio)</h2>
+    <p class="text-sm leading-relaxed mb-3">
+      Autorizo al {responsable.nombre} a recolectar y tratar los datos de identificación y contacto
+      del deportista y del acudiente, con el fin de gestionar la inscripción, la permanencia, la
+      planificación de entrenamientos, la inscripción ante la Liga de Patinaje de Antioquia y la
+      Federación Colombiana de Patinaje, el cobro de mensualidades y el cumplimiento de obligaciones
+      legales y contables.
+    </p>
+    <p class="text-sm mb-6">
+      <span class="inline-block w-5 h-5 border-2 border-gray-900 align-middle mr-2"></span>Autorizo
+      <span class="inline-block w-5 h-5 border-2 border-gray-900 align-middle ml-8 mr-2"></span>No autorizo
+    </p>
+
+    <!-- 3. Datos de salud -->
+    <h2 class="font-bold text-sm uppercase tracking-wide mb-2">3. Datos de salud (facultativo)</h2>
+    <p class="text-sm leading-relaxed mb-3">
+      Los datos de salud son <strong>datos sensibles</strong>. Declaro que se me informó que
+      <strong>no estoy obligado a autorizar su tratamiento</strong>. Autorizo el manejo del
+      certificado de aptitud física, la afiliación a EPS, alergias, lesiones y contacto de
+      emergencia, con el único fin de proteger la integridad del deportista durante la actividad.
+    </p>
+    <p class="text-xs text-gray-700 mb-3">
+      Nota: el certificado de aptitud física es requisito de seguridad para entrenar. Si no se
+      aporta, el club no puede autorizar la práctica deportiva.
+    </p>
+    <p class="text-sm mb-6">
+      <span class="inline-block w-5 h-5 border-2 border-gray-900 align-middle mr-2"></span>Autorizo
+      <span class="inline-block w-5 h-5 border-2 border-gray-900 align-middle ml-8 mr-2"></span>No autorizo
+    </p>
+
+    <!-- 4. Imagen -->
+    <h2 class="font-bold text-sm uppercase tracking-wide mb-2">4. Uso de imagen (facultativo y por separado)</h2>
+    <p class="text-sm leading-relaxed mb-3">
+      La imagen es un <strong>dato sensible</strong> y un derecho propio del deportista. Se me
+      informó que <strong>puedo negar cualquiera de estos usos sin que ello afecte la inscripción</strong>,
+      y que puedo <strong>revocar esta autorización en cualquier momento</strong> por escrito, tras
+      lo cual el club retirará el contenido de sus canales propios.
+    </p>
+    <p class="text-sm mb-3">Marque únicamente los usos que autoriza:</p>
+
+    <table class="w-full text-sm border-collapse mb-4">
+      <tbody>
+        {casillas.map((c) => (
+          <tr>
+            <td class="border border-gray-400 p-2 text-center w-12">
+              <span class="inline-block w-5 h-5 border-2 border-gray-900"></span>
+            </td>
+            <td class="border border-gray-400 p-2">
+              <strong>{c.titulo}</strong>
+              <br />
+              <span class="text-xs text-gray-700">{c.detalle}</span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <p class="text-xs text-gray-700 mb-6">
+      El club no cede ni vende estas imágenes a terceros con fines distintos a los marcados, ni
+      recibe contraprestación económica del deportista por su uso.
+    </p>
+
+    <!-- 5. Derechos -->
+    <h2 class="font-bold text-sm uppercase tracking-wide mb-2">5. Derechos del titular</h2>
+    <p class="text-sm leading-relaxed mb-6">
+      Declaro que conozco mi derecho a conocer, actualizar, rectificar y suprimir los datos, a
+      solicitar prueba de esta autorización, a revocarla y a presentar quejas ante la
+      Superintendencia de Industria y Comercio. Las solicitudes se radican en
+      {responsable.email} o al {responsable.telefono}, y se responden en los plazos de la Ley 1581 de
+      2012. La política completa está publicada en formax-j.com/privacy.
+    </p>
+
+    <!-- 6. Firmas -->
+    <h2 class="font-bold text-sm uppercase tracking-wide mb-4">6. Firmas</h2>
+    <div class="grid grid-cols-2 gap-10 text-sm mt-10">
+      <div>
+        <div class="border-t border-gray-900 pt-2">
+          Firma del acudiente<br />
+          <span class="text-xs text-gray-700">Nombre y documento</span>
+        </div>
+      </div>
+      <div>
+        <div class="border-t border-gray-900 pt-2">
+          Firma por el club<br />
+          <span class="text-xs text-gray-700">Nombre y cargo</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-sm mt-10">Ciudad y fecha: _______________________________________</p>
+
+    <p class="text-xs text-gray-600 mt-8 pt-4 border-t border-gray-300">
+      Este documento se conserva como prueba de la autorización, conforme al artículo 12 del Decreto
+      1377 de 2013. Se entrega copia al acudiente.
+    </p>
+  </article>
+</MainLayout>
+
+<style is:global>
+  /* La hoja se ve como papel en pantalla y limpia al imprimir. */
+  .hoja { line-height: 1.5; }
+
+  @media print {
+    .no-print,
+    header nav,
+    #navbar,
+    footer,
+    #whatsappBtn,
+    #backToTop,
+    .skip-link {
+      display: none !important;
+    }
+    .hoja {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      font-size: 11pt;
+    }
+    main { min-height: 0 !important; }
+    @page { margin: 1.5cm; }
+  }
+</style>
+
+<script>
+  document.getElementById('btnImprimir')?.addEventListener('click', () => window.print());
+</script>

@@ -1,0 +1,30 @@
+# netlify.toml — despliegue estatico del sitio FORMAX-J
+[build]
+  command = "pnpm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # PUBLIC_SANITY_PROJECT_ID y PUBLIC_SANITY_DATASET se definen en
+  # Netlify > Site configuration > Environment variables.
+
+# El sitio es estatico: cada publicacion en Sanity dispara un build hook
+# (Netlify > Build & deploy > Build hooks) y el contenido se regenera.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/dotacion/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

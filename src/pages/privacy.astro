@@ -1,0 +1,13 @@
+---
+// src/pages/privacy.astro
+import MainLayout from '../layouts/MainLayout.astro';
+import LegalDoc from '../components/sections/LegalDoc.astro';
+import { privacyDoc } from '../data/legal';
+---
+
+<MainLayout
+  title="Política de Tratamiento de Datos | Club de Patinaje FORMAX-J"
+  description="Política de tratamiento de datos personales del Club de Patinaje FORMAX-J conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013."
+>
+  <LegalDoc doc={privacyDoc} />
+</MainLayout>

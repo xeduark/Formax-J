@@ -3,6 +3,11 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import { DOTACION_ITEMS, DOTACION_PACKAGES, SIZE_RECOMMENDATIONS, TRACK_STATS } from '../data/dotacion';
 import SuitViewer3D from '../components/sections/SuitViewer3D.astro';
+import PaymentPanel from '../components/ui/PaymentPanel.astro';
+import { fromSanity, QUERY_PAGOS } from '../lib/sanity';
+import { paymentConfig } from '../data/payments';
+
+const pagos = await fromSanity(QUERY_PAGOS, paymentConfig);
 
 const title = 'Dotación Oficial | Club de Patinaje FORMAX-J x Cityrun';
 const description =
@@ -407,6 +412,14 @@ const allSizes = [...new Set(SIZE_RECOMMENDATIONS.map((s) => s.size))];
           Agrega al menos un combo o prenda y escribe el nombre del patinador.
         </p>
       </form>
+
+      <div class="mt-12">
+        <PaymentPanel
+          concepto="Dotación oficial"
+          config={pagos}
+          nota="Usa el total que calculaste arriba. El club confirma el valor antes de la confección."
+        />
+      </div>
     </div>
   </section>
 </MainLayout>
